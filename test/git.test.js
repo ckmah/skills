@@ -15,59 +15,56 @@ test('formatCommitMessage prefixes skills changes', () => {
 
 test('commitAndPush stages files, commits, and pushes', () => {
   const calls = [];
-  const exec = (cmd, opts) => {
-    calls.push({ cmd, cwd: opts?.cwd });
-    if (cmd.startsWith('git diff --cached --quiet')) {
+  const execFile = (cmd, args, opts) => {
+    calls.push({ cmd, args, cwd: opts?.cwd });
+    if (cmd === 'git' && args[0] === 'diff') {
       const err = new Error('has staged changes');
       err.status = 1;
       throw err;
     }
-    return '';
+    return Buffer.from('');
   };
   const result = commitAndPush({
     repoDir: '/repo',
     files: ['manifest.json', 'README.md'],
     message: 'skills: add foo',
-    exec,
+    execFile,
   });
   assert.equal(result.committed, true);
-  assert.ok(calls.some((c) => c.cmd.includes("git add 'manifest.json' 'README.md'")));
-  assert.ok(calls.some((c) => c.cmd.includes('git commit -m')));
-  assert.ok(calls.some((c) => c.cmd.includes('git push')));
+  assert.deepEqual(calls[0].args, ['add', 'manifest.json', 'README.md']);
+  assert.ok(calls.some((c) => c.args[0] === 'commit' && c.args.includes('skills: add foo')));
+  assert.ok(calls.some((c) => c.args[0] === 'push'));
 });
 
 test('commitAndPush skips commit when no staged changes', () => {
-  const exec = (cmd) => {
-    if (cmd.startsWith('git diff --cached --quiet')) return '';
-    return '';
-  };
+  const execFile = () => Buffer.from('');
   const result = commitAndPush({
     repoDir: '/repo',
     files: ['manifest.json'],
     message: 'skills: sync manifest',
-    exec,
+    execFile,
   });
   assert.equal(result.committed, false);
 });
 
 test('hasStagedChanges detects staged diff', () => {
-  const exec = (cmd) => {
-    if (cmd === 'git diff --cached --quiet') {
+  const execFile = (cmd, args) => {
+    if (cmd === 'git' && args[0] === 'diff') {
       const err = new Error('staged');
       err.status = 1;
       throw err;
     }
-    return '';
+    return Buffer.from('');
   };
-  assert.equal(hasStagedChanges({ repoDir: '/repo', exec }), true);
+  assert.equal(hasStagedChanges({ repoDir: '/repo', execFile }), true);
 });
 
 test('pullRepo runs fetch and pull', () => {
   const calls = [];
-  const exec = (cmd) => {
-    calls.push(cmd);
-    return '';
+  const execFile = (cmd, args) => {
+    calls.push(args);
+    return Buffer.from('');
   };
-  pullRepo({ repoDir: '/repo', branch: 'main', exec });
-  assert.deepEqual(calls, ['git fetch origin', 'git pull origin main']);
+  pullRepo({ repoDir: '/repo', branch: 'main', execFile });
+  assert.deepEqual(calls, [['fetch', 'origin'], ['pull', 'origin', 'main']]);
 });
