@@ -4,7 +4,7 @@ import { execSync } from 'node:child_process';
 import { mergeManifestFromLock } from './manifest.js';
 import { updateReadmeSkillsSection } from './readme.js';
 import { buildAddCommand, buildRemoveCommand, buildUpdateCommand, buildCheckCommand, shouldUseCopy, runSkillsCommand } from './skills-exec.js';
-import { commitAndPush, pullRepo, formatCommitMessage } from './git.js';
+import { commitAndPush, pullRepo, formatCommitMessage, ensureRepoGitIdentity } from './git.js';
 import { buildReconcilePlan } from './reconcile.js';
 import { buildCursorHooks, mergeCursorHooks } from './hooks.js';
 import { getSchedulerPlatform, schedulerInstallScript } from './scheduler.js';
@@ -146,6 +146,7 @@ export function createCliHandlers(deps) {
         buildCursorHooks(cloneDir, cliScriptPath(cloneDir), reconcileScriptPath(cloneDir)),
       );
       deps.writeFile(hooksPath, `${JSON.stringify(merged, null, 2)}\n`);
+      ensureRepoGitIdentity({ repoDir: cloneDir });
       deps.log(`Setup complete. Clone: ${cloneDir}`);
     },
 
