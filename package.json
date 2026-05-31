@@ -1,0 +1,21 @@
+{
+  "name": "ckmah-skills",
+  "version": "1.0.0",
+  "description": "Personal hands-free agent skills sync for ckmah",
+  "type": "module",
+  "bin": {
+    "ckmah-skills": "bin/cli.js"
+  },
+  "scripts": {
+    "test": "node --test test/**/*.test.js",
+    "test:watch": "node --test --watch test/**/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ckmah/skills.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
