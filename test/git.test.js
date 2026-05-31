@@ -5,7 +5,10 @@ import {
   commitAndPush,
   pullRepo,
   hasStagedChanges,
+  resolveGitIdentity,
 } from '../bin/lib/git.js';
+
+const testIdentity = { name: 'Test User', email: 'test@example.com' };
 
 test('formatCommitMessage prefixes skills changes', () => {
   assert.equal(formatCommitMessage('add', 'brainstorming'), 'skills: add brainstorming');
@@ -29,6 +32,7 @@ test('commitAndPush stages files, commits, and pushes', () => {
     files: ['manifest.json', 'README.md'],
     message: 'skills: add foo',
     execFile,
+    identity: testIdentity,
   });
   assert.equal(result.committed, true);
   assert.deepEqual(calls[0].args, ['add', 'manifest.json', 'README.md']);
@@ -43,6 +47,7 @@ test('commitAndPush skips commit when no staged changes', () => {
     files: ['manifest.json'],
     message: 'skills: sync manifest',
     execFile,
+    identity: testIdentity,
   });
   assert.equal(result.committed, false);
 });
@@ -57,6 +62,21 @@ test('hasStagedChanges detects staged diff', () => {
     return Buffer.from('');
   };
   assert.equal(hasStagedChanges({ repoDir: '/repo', execFile }), true);
+});
+
+test('resolveGitIdentity falls back to global git config', () => {
+  const exec = () => {
+    throw new Error('gh unavailable');
+  };
+  const execFile = (cmd, args) => {
+    if (args.includes('user.name')) return Buffer.from('Git User');
+    if (args.includes('user.email')) return Buffer.from('git@example.com');
+    return Buffer.from('');
+  };
+  assert.deepEqual(resolveGitIdentity({ exec, execFile }), {
+    name: 'Git User',
+    email: 'git@example.com',
+  });
 });
 
 test('pullRepo runs fetch and pull', () => {

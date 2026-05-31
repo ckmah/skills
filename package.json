@@ -7,8 +7,8 @@
     "ckmah-skills": "bin/cli.js"
   },
   "scripts": {
-    "test": "node --test test/**/*.test.js",
-    "test:watch": "node --test --watch test/**/*.test.js"
+    "test": "node scripts/test.mjs",
+    "test:watch": "node scripts/test.mjs --watch"
   },
   "repository": {
     "type": "git",

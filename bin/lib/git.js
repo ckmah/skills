@@ -9,15 +9,20 @@ function runGit(args, { repoDir, execFile = defaultExecFile, env = process.env }
   return execFile('git', args, { cwd: repoDir, stdio: 'pipe', env: { ...process.env, ...env } });
 }
 
+function readOutput(value) {
+  if (value == null) return '';
+  return typeof value === 'string' ? value : value.toString();
+}
+
 export function resolveGitIdentity({ execFile = defaultExecFile, exec = defaultExec } = {}) {
   try {
-    const json = exec('gh api user', { encoding: 'utf8', stdio: 'pipe' });
+    const json = readOutput(exec('gh api user', { encoding: 'utf8', stdio: 'pipe' }));
     const user = JSON.parse(json);
     const name = user.name || user.login;
     return { name, email: `${user.login}@users.noreply.github.com` };
   } catch {
-    const name = execFile('git', ['config', '--global', 'user.name'], { encoding: 'utf8' }).trim();
-    const email = execFile('git', ['config', '--global', 'user.email'], { encoding: 'utf8' }).trim();
+    const name = readOutput(execFile('git', ['config', '--global', 'user.name'], { encoding: 'utf8' })).trim();
+    const email = readOutput(execFile('git', ['config', '--global', 'user.email'], { encoding: 'utf8' })).trim();
     if (name && email) return { name, email };
     throw new Error('Git identity not configured. Set git user.name/user.email or log in with gh auth login.');
   }
