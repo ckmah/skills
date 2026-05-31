@@ -125,13 +125,17 @@ export function createCliHandlers(deps) {
       await installFromManifest(manifest);
 
       const platform = getSchedulerPlatform(deps.platform);
-      const script = schedulerInstallScript(platform, cloneDir);
-      if (platform === 'windows') {
-        deps.exec(`powershell -NoProfile -ExecutionPolicy Bypass -File "${path.join(cloneDir, 'bin', 'scheduler', 'install-windows.ps1')}"`, { stdio: 'inherit' });
-      } else if (platform === 'macos') {
-        deps.exec(`bash "${path.join(cloneDir, 'bin', 'scheduler', 'install-macos.sh')}"`, { stdio: 'inherit' });
-      } else {
-        deps.exec(`bash "${path.join(cloneDir, 'bin', 'scheduler', 'install-linux.sh')}"`, { stdio: 'inherit' });
+      try {
+        if (platform === 'windows') {
+          deps.exec(`powershell -NoProfile -ExecutionPolicy Bypass -File "${path.join(cloneDir, 'bin', 'scheduler', 'install-windows.ps1')}"`, { stdio: 'inherit' });
+        } else if (platform === 'macos') {
+          deps.exec(`bash "${path.join(cloneDir, 'bin', 'scheduler', 'install-macos.sh')}"`, { stdio: 'inherit' });
+        } else {
+          deps.exec(`bash "${path.join(cloneDir, 'bin', 'scheduler', 'install-linux.sh')}"`, { stdio: 'inherit' });
+        }
+      } catch (err) {
+        deps.error(`Background sync registration failed: ${err.message ?? err}`);
+        deps.error('Run the scheduler install script manually from an interactive PowerShell session.');
       }
 
       const hooksPath = getCursorHooksPath(deps.homeDir);

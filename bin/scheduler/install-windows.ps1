@@ -8,5 +8,6 @@ $triggers = @(
   (New-ScheduledTaskTrigger -AtLogOn),
   (New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Minutes 15) -RepetitionDuration (New-TimeSpan -Days 3650))
 )
-Register-ScheduledTask -TaskName 'CkmahSkillsSync' -Action $action -Trigger $triggers -Force | Out-Null
+$principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
+Register-ScheduledTask -TaskName 'CkmahSkillsSync' -Action $action -Trigger $triggers -Principal $principal -Force | Out-Null
 Write-Output 'Registered CkmahSkillsSync task.'
