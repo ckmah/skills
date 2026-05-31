@@ -46,6 +46,7 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | executing-plans | [obra/superpowers](https://github.com/obra/superpowers) |
 | find-skills | [vercel-labs/skills](https://github.com/vercel-labs/skills) |
 | finishing-a-development-branch | [obra/superpowers](https://github.com/obra/superpowers) |
+| impeccable | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) |
 | receiving-code-review | [obra/superpowers](https://github.com/obra/superpowers) |
 | requesting-code-review | [obra/superpowers](https://github.com/obra/superpowers) |
 | subagent-driven-development | [obra/superpowers](https://github.com/obra/superpowers) |
@@ -57,6 +58,6 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | writing-plans | [obra/superpowers](https://github.com/obra/superpowers) |
 | writing-skills | [obra/superpowers](https://github.com/obra/superpowers) |
 
-**15 skills** across 2 sources. Last updated: 2026-05-31.
+**16 skills** across 3 sources. Last updated: 2026-05-31.
 
 <!-- SKILLS:END -->
