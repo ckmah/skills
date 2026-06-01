@@ -1,3 +1,5 @@
+import { execFileSync } from 'node:child_process';
+
 export function shouldUseCopy(platform, installMethod = 'auto') {
   if (installMethod === 'copy') return true;
   if (installMethod === 'symlink') return false;
@@ -38,6 +40,7 @@ export function buildCheckCommand({ global: isGlobal = true }) {
   return cmd;
 }
 
-export function runSkillsCommand(cmd, exec) {
-  return exec(cmd.join(' '), { stdio: 'inherit' });
+export function runSkillsCommand(cmd, execFile = execFileSync) {
+  const [executable, ...args] = cmd;
+  return execFile(executable, args, { stdio: 'inherit' });
 }

@@ -6,6 +6,7 @@ import {
   buildUpdateCommand,
   buildCheckCommand,
   shouldUseCopy,
+  runSkillsCommand,
 } from '../bin/lib/skills-exec.js';
 
 test('buildAddCommand includes agent flags and global options', () => {
@@ -56,4 +57,23 @@ test('buildRemoveCommand targets skill globally', () => {
 test('buildUpdateCommand and buildCheckCommand use global flag', () => {
   assert.ok(buildUpdateCommand({ global: true }).includes('-g'));
   assert.ok(buildCheckCommand({ global: true }).includes('-g'));
+});
+
+test('runSkillsCommand passes wildcard skill without shell glob expansion', () => {
+  const calls = [];
+  const mockExecFile = (executable, args) => {
+    calls.push({ executable, args });
+  };
+  runSkillsCommand(
+    buildAddCommand({
+      repo: 'obra/superpowers',
+      skills: ['*'],
+      agents: ['cursor'],
+      global: true,
+    }),
+    mockExecFile,
+  );
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].executable, 'npx');
+  assert.ok(calls[0].args.includes('*'));
 });
