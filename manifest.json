@@ -9,15 +9,75 @@
   "customRepo": "ckmah/skills",
   "sources": [
     {
-      "repo": "obra/superpowers",
+      "repo": "heygen-com/hyperframes",
       "skills": [
-        "*"
+        "animejs",
+        "contribute-catalog",
+        "css-animations",
+        "gsap",
+        "hyperframes",
+        "hyperframes-cli",
+        "hyperframes-media",
+        "hyperframes-registry",
+        "lottie",
+        "remotion-to-hyperframes",
+        "tailwind",
+        "three",
+        "typegpu",
+        "waapi",
+        "website-to-hyperframes"
+      ]
+    },
+    {
+      "repo": "k-dense-ai/claude-scientific-skills",
+      "skills": [
+        "cellxgene-census"
+      ]
+    },
+    {
+      "repo": "K-Dense-AI/claude-scientific-skills",
+      "skills": [
+        "anndata",
+        "pydeseq2",
+        "scanpy",
+        "scvi-tools"
+      ]
+    },
+    {
+      "repo": "marimo-team/marimo-pair",
+      "skills": [
+        "marimo-pair"
+      ]
+    },
+    {
+      "repo": "marimo-team/skills",
+      "skills": [
+        "add-molab-badge",
+        "anywidget-generator",
+        "implement-paper",
+        "jupyter-to-marimo",
+        "marimo-batch",
+        "marimo-notebook",
+        "streamlit-to-marimo",
+        "wasm-compatibility"
+      ]
+    },
+    {
+      "repo": "microsoft/webwright",
+      "skills": [
+        "webwright"
       ]
     },
     {
       "repo": "pbakaus/impeccable",
       "skills": [
         "impeccable"
+      ]
+    },
+    {
+      "repo": "shadcn/ui",
+      "skills": [
+        "shadcn"
       ]
     },
     {
