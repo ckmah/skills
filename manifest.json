@@ -47,6 +47,12 @@
       ]
     },
     {
+      "repo": "makenotion/skills",
+      "skills": [
+        "notion-cli"
+      ]
+    },
+    {
       "repo": "marimo-team/marimo-pair",
       "skills": [
         "marimo-pair"

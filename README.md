@@ -68,6 +68,7 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | marimo-batch | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | marimo-notebook | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | marimo-pair | [marimo-team/marimo-pair](https://github.com/marimo-team/marimo-pair) |
+| notion-cli | [makenotion/skills](https://github.com/makenotion/skills) |
 | receiving-code-review | [obra/superpowers](https://github.com/obra/superpowers) |
 | remotion-to-hyperframes | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | requesting-code-review | [obra/superpowers](https://github.com/obra/superpowers) |
@@ -87,6 +88,6 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | writing-plans | [obra/superpowers](https://github.com/obra/superpowers) |
 | writing-skills | [obra/superpowers](https://github.com/obra/superpowers) |
 
-**45 skills** across 10 sources. Last updated: 2026-06-08.
+**46 skills** across 11 sources. Last updated: 2026-06-08.
 
 <!-- SKILLS:END -->
