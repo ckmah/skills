@@ -9,6 +9,12 @@
   "customRepo": "ckmah/skills",
   "sources": [
     {
+      "repo": "github/awesome-copilot",
+      "skills": [
+        "azure-devops-cli"
+      ]
+    },
+    {
       "repo": "heygen-com/hyperframes",
       "skills": [
         "animejs",

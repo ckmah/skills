@@ -43,6 +43,7 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 |-------|--------|
 | animejs | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | anywidget-generator | [marimo-team/skills](https://github.com/marimo-team/skills) |
+| azure-devops-cli | [github/awesome-copilot](https://github.com/github/awesome-copilot) |
 | brainstorming | [obra/superpowers](https://github.com/obra/superpowers) |
 | cavecrew | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
 | caveman | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
@@ -86,6 +87,6 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | writing-plans | [obra/superpowers](https://github.com/obra/superpowers) |
 | writing-skills | [obra/superpowers](https://github.com/obra/superpowers) |
 
-**44 skills** across 9 sources. Last updated: 2026-06-03.
+**45 skills** across 10 sources. Last updated: 2026-06-08.
 
 <!-- SKILLS:END -->
