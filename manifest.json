@@ -9,6 +9,12 @@
   "customRepo": "ckmah/skills",
   "sources": [
     {
+      "repo": "github/awesome-copilot",
+      "skills": [
+        "azure-devops-cli"
+      ]
+    },
+    {
       "repo": "heygen-com/hyperframes",
       "skills": [
         "animejs",
@@ -29,18 +35,21 @@
       ]
     },
     {
-      "repo": "k-dense-ai/claude-scientific-skills",
+      "repo": "JuliusBrussee/caveman",
       "skills": [
-        "cellxgene-census"
+        "cavecrew",
+        "caveman",
+        "caveman-commit",
+        "caveman-compress",
+        "caveman-help",
+        "caveman-review",
+        "caveman-stats"
       ]
     },
     {
-      "repo": "K-Dense-AI/claude-scientific-skills",
+      "repo": "makenotion/skills",
       "skills": [
-        "anndata",
-        "pydeseq2",
-        "scanpy",
-        "scvi-tools"
+        "notion-cli"
       ]
     },
     {
@@ -52,20 +61,21 @@
     {
       "repo": "marimo-team/skills",
       "skills": [
-        "add-molab-badge",
         "anywidget-generator",
-        "implement-paper",
-        "jupyter-to-marimo",
         "marimo-batch",
-        "marimo-notebook",
-        "streamlit-to-marimo",
-        "wasm-compatibility"
+        "marimo-notebook"
       ]
     },
     {
       "repo": "microsoft/webwright",
       "skills": [
         "webwright"
+      ]
+    },
+    {
+      "repo": "obra/superpowers",
+      "skills": [
+        "*"
       ]
     },
     {
