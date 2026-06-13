@@ -54,6 +54,7 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | caveman-stats | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
 | contribute-catalog | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | css-animations | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| diagram-design | [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) |
 | dispatching-parallel-agents | [obra/superpowers](https://github.com/obra/superpowers) |
 | executing-plans | [obra/superpowers](https://github.com/obra/superpowers) |
 | find-skills | [vercel-labs/skills](https://github.com/vercel-labs/skills) |
@@ -88,6 +89,6 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | writing-plans | [obra/superpowers](https://github.com/obra/superpowers) |
 | writing-skills | [obra/superpowers](https://github.com/obra/superpowers) |
 
-**46 skills** across 11 sources. Last updated: 2026-06-12.
+**47 skills** across 12 sources. Last updated: 2026-06-13.
 
 <!-- SKILLS:END -->
