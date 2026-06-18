@@ -41,7 +41,6 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 
 | Skill | Source |
 |-------|--------|
-| animejs | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | anywidget-generator | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | azure-devops-cli | [github/awesome-copilot](https://github.com/github/awesome-copilot) |
 | brainstorming | [obra/superpowers](https://github.com/obra/superpowers) |
@@ -52,43 +51,30 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | caveman-help | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
 | caveman-review | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
 | caveman-stats | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| contribute-catalog | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
-| css-animations | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | diagram-design | [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) |
 | dispatching-parallel-agents | [obra/superpowers](https://github.com/obra/superpowers) |
 | executing-plans | [obra/superpowers](https://github.com/obra/superpowers) |
 | find-skills | [vercel-labs/skills](https://github.com/vercel-labs/skills) |
 | finishing-a-development-branch | [obra/superpowers](https://github.com/obra/superpowers) |
-| gsap | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
-| hyperframes | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
-| hyperframes-cli | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
-| hyperframes-media | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
-| hyperframes-registry | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| frontend-slides | [zarazhangrui/frontend-slides](https://github.com/zarazhangrui/frontend-slides) |
 | impeccable | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) |
-| lottie | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | marimo-batch | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | marimo-notebook | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | marimo-pair | [marimo-team/marimo-pair](https://github.com/marimo-team/marimo-pair) |
 | notion-cli | [makenotion/skills](https://github.com/makenotion/skills) |
 | receiving-code-review | [obra/superpowers](https://github.com/obra/superpowers) |
-| remotion-to-hyperframes | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | requesting-code-review | [obra/superpowers](https://github.com/obra/superpowers) |
 | shadcn | [shadcn/ui](https://github.com/shadcn/ui) |
 | subagent-driven-development | [obra/superpowers](https://github.com/obra/superpowers) |
 | systematic-debugging | [obra/superpowers](https://github.com/obra/superpowers) |
-| tailwind | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | test-driven-development | [obra/superpowers](https://github.com/obra/superpowers) |
-| three | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
-| typegpu | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | using-git-worktrees | [obra/superpowers](https://github.com/obra/superpowers) |
 | using-superpowers | [obra/superpowers](https://github.com/obra/superpowers) |
 | verification-before-completion | [obra/superpowers](https://github.com/obra/superpowers) |
-| waapi | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
-| website-to-hyperframes | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | webwright | [microsoft/webwright](https://github.com/microsoft/webwright) |
 | writing-plans | [obra/superpowers](https://github.com/obra/superpowers) |
 | writing-skills | [obra/superpowers](https://github.com/obra/superpowers) |
 
-**47 skills** across 12 sources. Last updated: 2026-06-13.
+**33 skills** across 12 sources. Last updated: 2026-06-18.
 
 <!-- SKILLS:END -->

@@ -21,26 +21,6 @@
       ]
     },
     {
-      "repo": "heygen-com/hyperframes",
-      "skills": [
-        "animejs",
-        "contribute-catalog",
-        "css-animations",
-        "gsap",
-        "hyperframes",
-        "hyperframes-cli",
-        "hyperframes-media",
-        "hyperframes-registry",
-        "lottie",
-        "remotion-to-hyperframes",
-        "tailwind",
-        "three",
-        "typegpu",
-        "waapi",
-        "website-to-hyperframes"
-      ]
-    },
-    {
       "repo": "JuliusBrussee/caveman",
       "skills": [
         "cavecrew",
@@ -100,6 +80,12 @@
       "repo": "vercel-labs/skills",
       "skills": [
         "find-skills"
+      ]
+    },
+    {
+      "repo": "zarazhangrui/frontend-slides",
+      "skills": [
+        "frontend-slides"
       ]
     }
   ]
