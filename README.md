@@ -48,6 +48,7 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | cellxgene-census | [k-dense-ai/claude-scientific-skills](https://github.com/k-dense-ai/claude-scientific-skills) |
 | contribute-catalog | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | css-animations | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| diagram-design | [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) |
 | find-skills | [vercel-labs/skills](https://github.com/vercel-labs/skills) |
 | gsap | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | hyperframes | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
@@ -76,6 +77,6 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | website-to-hyperframes | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | webwright | [microsoft/webwright](https://github.com/microsoft/webwright) |
 
-**34 skills** across 10 sources. Last updated: 2026-06-23.
+**35 skills** across 11 sources. Last updated: 2026-06-24.
 
 <!-- SKILLS:END -->

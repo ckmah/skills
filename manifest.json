@@ -9,6 +9,12 @@
   "customRepo": "ckmah/skills",
   "sources": [
     {
+      "repo": "cathrynlavery/diagram-design",
+      "skills": [
+        "diagram-design"
+      ]
+    },
+    {
       "repo": "heygen-com/hyperframes",
       "skills": [
         "animejs",
