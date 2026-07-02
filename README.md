@@ -41,40 +41,42 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 
 | Skill | Source |
 |-------|--------|
+| add-molab-badge | [marimo-team/skills](https://github.com/marimo-team/skills) |
+| animejs | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| anndata | [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) |
 | anywidget-generator | [marimo-team/skills](https://github.com/marimo-team/skills) |
-| azure-devops-cli | [github/awesome-copilot](https://github.com/github/awesome-copilot) |
-| brainstorming | [obra/superpowers](https://github.com/obra/superpowers) |
-| cavecrew | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| caveman | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| caveman-commit | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| caveman-compress | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| caveman-help | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| caveman-review | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| caveman-stats | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
+| cellxgene-census | [k-dense-ai/claude-scientific-skills](https://github.com/k-dense-ai/claude-scientific-skills) |
+| contribute-catalog | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| css-animations | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | diagram-design | [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) |
-| dispatching-parallel-agents | [obra/superpowers](https://github.com/obra/superpowers) |
-| executing-plans | [obra/superpowers](https://github.com/obra/superpowers) |
 | find-skills | [vercel-labs/skills](https://github.com/vercel-labs/skills) |
-| finishing-a-development-branch | [obra/superpowers](https://github.com/obra/superpowers) |
-| frontend-slides | [zarazhangrui/frontend-slides](https://github.com/zarazhangrui/frontend-slides) |
+| gsap | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| hyperframes | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| hyperframes-cli | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| hyperframes-media | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| hyperframes-registry | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | impeccable | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) |
+| implement-paper | [marimo-team/skills](https://github.com/marimo-team/skills) |
+| jupyter-to-marimo | [marimo-team/skills](https://github.com/marimo-team/skills) |
+| lottie | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | marimo-batch | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | marimo-notebook | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | marimo-pair | [marimo-team/marimo-pair](https://github.com/marimo-team/marimo-pair) |
 | notion-cli | [makenotion/skills](https://github.com/makenotion/skills) |
-| receiving-code-review | [obra/superpowers](https://github.com/obra/superpowers) |
-| requesting-code-review | [obra/superpowers](https://github.com/obra/superpowers) |
+| pydeseq2 | [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) |
+| remotion-to-hyperframes | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| scanpy | [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) |
+| scvi-tools | [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) |
 | shadcn | [shadcn/ui](https://github.com/shadcn/ui) |
-| subagent-driven-development | [obra/superpowers](https://github.com/obra/superpowers) |
-| systematic-debugging | [obra/superpowers](https://github.com/obra/superpowers) |
-| test-driven-development | [obra/superpowers](https://github.com/obra/superpowers) |
-| using-git-worktrees | [obra/superpowers](https://github.com/obra/superpowers) |
-| using-superpowers | [obra/superpowers](https://github.com/obra/superpowers) |
-| verification-before-completion | [obra/superpowers](https://github.com/obra/superpowers) |
+| streamlit-to-marimo | [marimo-team/skills](https://github.com/marimo-team/skills) |
+| tailwind | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| three | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| typegpu | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| waapi | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| wasm-compatibility | [marimo-team/skills](https://github.com/marimo-team/skills) |
+| website-to-hyperframes | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | webwright | [microsoft/webwright](https://github.com/microsoft/webwright) |
-| writing-plans | [obra/superpowers](https://github.com/obra/superpowers) |
-| writing-skills | [obra/superpowers](https://github.com/obra/superpowers) |
 
-**33 skills** across 12 sources. Last updated: 2026-07-02.
+**35 skills** across 11 sources. Last updated: 2026-07-02.
 
 <!-- SKILLS:END -->
