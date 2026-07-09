@@ -15,21 +15,38 @@
       ]
     },
     {
-      "repo": "github/awesome-copilot",
+      "repo": "heygen-com/hyperframes",
       "skills": [
-        "azure-devops-cli"
+        "animejs",
+        "contribute-catalog",
+        "css-animations",
+        "gsap",
+        "hyperframes",
+        "hyperframes-cli",
+        "hyperframes-media",
+        "hyperframes-registry",
+        "lottie",
+        "remotion-to-hyperframes",
+        "tailwind",
+        "three",
+        "typegpu",
+        "waapi",
+        "website-to-hyperframes"
       ]
     },
     {
-      "repo": "JuliusBrussee/caveman",
+      "repo": "k-dense-ai/claude-scientific-skills",
       "skills": [
-        "cavecrew",
-        "caveman",
-        "caveman-commit",
-        "caveman-compress",
-        "caveman-help",
-        "caveman-review",
-        "caveman-stats"
+        "cellxgene-census"
+      ]
+    },
+    {
+      "repo": "K-Dense-AI/claude-scientific-skills",
+      "skills": [
+        "anndata",
+        "pydeseq2",
+        "scanpy",
+        "scvi-tools"
       ]
     },
     {
@@ -47,7 +64,10 @@
     {
       "repo": "marimo-team/skills",
       "skills": [
+        "add-molab-badge",
         "anywidget-generator",
+        "implement-paper",
+        "jupyter-to-marimo",
         "marimo-batch",
         "marimo-notebook",
         "streamlit-to-marimo",
@@ -58,12 +78,6 @@
       "repo": "microsoft/webwright",
       "skills": [
         "webwright"
-      ]
-    },
-    {
-      "repo": "obra/superpowers",
-      "skills": [
-        "*"
       ]
     },
     {
@@ -82,12 +96,6 @@
       "repo": "vercel-labs/skills",
       "skills": [
         "find-skills"
-      ]
-    },
-    {
-      "repo": "zarazhangrui/frontend-slides",
-      "skills": [
-        "frontend-slides"
       ]
     }
   ]
