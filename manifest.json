@@ -15,27 +15,25 @@
       ]
     },
     {
-      "repo": "ccheney/robust-skills",
+      "repo": "heygen-com/hyperframes",
       "skills": [
-        "mermaid-diagrams"
+        "tailwind",
+        "three"
       ]
     },
     {
-      "repo": "github/awesome-copilot",
+      "repo": "k-dense-ai/claude-scientific-skills",
       "skills": [
-        "azure-devops-cli"
+        "cellxgene-census"
       ]
     },
     {
-      "repo": "JuliusBrussee/caveman",
+      "repo": "K-Dense-AI/claude-scientific-skills",
       "skills": [
-        "cavecrew",
-        "caveman",
-        "caveman-commit",
-        "caveman-compress",
-        "caveman-help",
-        "caveman-review",
-        "caveman-stats"
+        "anndata",
+        "pydeseq2",
+        "scanpy",
+        "scvi-tools"
       ]
     },
     {
@@ -53,7 +51,10 @@
     {
       "repo": "marimo-team/skills",
       "skills": [
+        "add-molab-badge",
         "anywidget-generator",
+        "implement-paper",
+        "jupyter-to-marimo",
         "marimo-batch",
         "marimo-notebook",
         "streamlit-to-marimo",
@@ -76,6 +77,7 @@
         "improve-codebase-architecture",
         "prototype",
         "research",
+        "resolving-merge-conflicts",
         "setup-matt-pocock-skills",
         "tdd",
         "teach",
@@ -90,12 +92,6 @@
       "repo": "microsoft/webwright",
       "skills": [
         "webwright"
-      ]
-    },
-    {
-      "repo": "obra/superpowers",
-      "skills": [
-        "*"
       ]
     },
     {
@@ -114,18 +110,6 @@
       "repo": "vercel-labs/skills",
       "skills": [
         "find-skills"
-      ]
-    },
-    {
-      "repo": "willem4130/claude-code-skills",
-      "skills": [
-        "elite-powerpoint-designer"
-      ]
-    },
-    {
-      "repo": "zarazhangrui/frontend-slides",
-      "skills": [
-        "frontend-slides"
       ]
     }
   ]
