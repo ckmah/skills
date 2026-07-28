@@ -41,53 +41,44 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 
 | Skill | Source |
 |-------|--------|
+| add-molab-badge | [marimo-team/skills](https://github.com/marimo-team/skills) |
+| anndata | [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) |
 | anywidget-generator | [marimo-team/skills](https://github.com/marimo-team/skills) |
-| ask-matt | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| azure-devops-cli | [github/awesome-copilot](https://github.com/github/awesome-copilot) |
-| cavecrew | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| caveman | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| caveman-commit | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| caveman-compress | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| caveman-help | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| caveman-review | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| caveman-stats | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) |
-| code-review | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| codebase-design | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| diagnosing-bugs | [mattpocock/skills](https://github.com/mattpocock/skills) |
+| brainstorming | [obra/superpowers](https://github.com/obra/superpowers) |
+| cellxgene-census | [k-dense-ai/claude-scientific-skills](https://github.com/k-dense-ai/claude-scientific-skills) |
 | diagram-design | [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) |
-| domain-modeling | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| elite-powerpoint-designer | [willem4130/claude-code-skills](https://github.com/willem4130/claude-code-skills) |
+| dispatching-parallel-agents | [obra/superpowers](https://github.com/obra/superpowers) |
+| executing-plans | [obra/superpowers](https://github.com/obra/superpowers) |
 | find-skills | [vercel-labs/skills](https://github.com/vercel-labs/skills) |
-| frontend-slides | [zarazhangrui/frontend-slides](https://github.com/zarazhangrui/frontend-slides) |
-| grill-me | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| grill-with-docs | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| grilling | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| handoff | [mattpocock/skills](https://github.com/mattpocock/skills) |
+| finishing-a-development-branch | [obra/superpowers](https://github.com/obra/superpowers) |
 | impeccable | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) |
-| implement | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| improve-codebase-architecture | [mattpocock/skills](https://github.com/mattpocock/skills) |
+| implement-paper | [marimo-team/skills](https://github.com/marimo-team/skills) |
+| jupyter-to-marimo | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | marimo-batch | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | marimo-notebook | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | marimo-pair | [marimo-team/marimo-pair](https://github.com/marimo-team/marimo-pair) |
-| mermaid-diagrams | [ccheney/robust-skills](https://github.com/ccheney/robust-skills) |
 | notion-cli | [makenotion/skills](https://github.com/makenotion/skills) |
-| prototype | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| research | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| setup-matt-pocock-skills | [mattpocock/skills](https://github.com/mattpocock/skills) |
+| pydeseq2 | [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) |
+| receiving-code-review | [obra/superpowers](https://github.com/obra/superpowers) |
+| requesting-code-review | [obra/superpowers](https://github.com/obra/superpowers) |
+| scanpy | [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) |
+| scvi-tools | [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) |
 | shadcn | [shadcn/ui](https://github.com/shadcn/ui) |
 | streamlit-to-marimo | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | subagent-driven-development | [obra/superpowers](https://github.com/obra/superpowers) |
-| tdd | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| teach | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| to-spec | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| to-tickets | [mattpocock/skills](https://github.com/mattpocock/skills) |
-| triage | [mattpocock/skills](https://github.com/mattpocock/skills) |
+| systematic-debugging | [obra/superpowers](https://github.com/obra/superpowers) |
+| tailwind | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
+| test-driven-development | [obra/superpowers](https://github.com/obra/superpowers) |
+| three | [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes) |
 | using-git-worktrees | [obra/superpowers](https://github.com/obra/superpowers) |
+| using-superpowers | [obra/superpowers](https://github.com/obra/superpowers) |
+| verification-before-completion | [obra/superpowers](https://github.com/obra/superpowers) |
 | wasm-compatibility | [marimo-team/skills](https://github.com/marimo-team/skills) |
-| wayfinder | [mattpocock/skills](https://github.com/mattpocock/skills) |
 | webwright | [microsoft/webwright](https://github.com/microsoft/webwright) |
 | writing-great-skills | [mattpocock/skills](https://github.com/mattpocock/skills) |
+| writing-plans | [obra/superpowers](https://github.com/obra/superpowers) |
+| writing-skills | [obra/superpowers](https://github.com/obra/superpowers) |
 
-**46 skills** across 15 sources. Last updated: 2026-07-27.
+**37 skills** across 13 sources. Last updated: 2026-07-28.
 
 <!-- SKILLS:END -->
