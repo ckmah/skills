@@ -15,27 +15,25 @@
       ]
     },
     {
-      "repo": "ccheney/robust-skills",
+      "repo": "heygen-com/hyperframes",
       "skills": [
-        "mermaid-diagrams"
+        "tailwind",
+        "three"
       ]
     },
     {
-      "repo": "github/awesome-copilot",
+      "repo": "k-dense-ai/claude-scientific-skills",
       "skills": [
-        "azure-devops-cli"
+        "cellxgene-census"
       ]
     },
     {
-      "repo": "JuliusBrussee/caveman",
+      "repo": "K-Dense-AI/claude-scientific-skills",
       "skills": [
-        "cavecrew",
-        "caveman",
-        "caveman-commit",
-        "caveman-compress",
-        "caveman-help",
-        "caveman-review",
-        "caveman-stats"
+        "anndata",
+        "pydeseq2",
+        "scanpy",
+        "scvi-tools"
       ]
     },
     {
@@ -53,7 +51,10 @@
     {
       "repo": "marimo-team/skills",
       "skills": [
+        "add-molab-badge",
         "anywidget-generator",
+        "implement-paper",
+        "jupyter-to-marimo",
         "marimo-batch",
         "marimo-notebook",
         "streamlit-to-marimo",
@@ -63,26 +64,6 @@
     {
       "repo": "mattpocock/skills",
       "skills": [
-        "ask-matt",
-        "code-review",
-        "codebase-design",
-        "diagnosing-bugs",
-        "domain-modeling",
-        "grill-me",
-        "grill-with-docs",
-        "grilling",
-        "handoff",
-        "implement",
-        "improve-codebase-architecture",
-        "prototype",
-        "research",
-        "setup-matt-pocock-skills",
-        "tdd",
-        "teach",
-        "to-spec",
-        "to-tickets",
-        "triage",
-        "wayfinder",
         "writing-great-skills"
       ]
     },
@@ -114,18 +95,6 @@
       "repo": "vercel-labs/skills",
       "skills": [
         "find-skills"
-      ]
-    },
-    {
-      "repo": "willem4130/claude-code-skills",
-      "skills": [
-        "elite-powerpoint-designer"
-      ]
-    },
-    {
-      "repo": "zarazhangrui/frontend-slides",
-      "skills": [
-        "frontend-slides"
       ]
     }
   ]
