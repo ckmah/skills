@@ -83,11 +83,12 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | to-tickets | [mattpocock/skills](https://github.com/mattpocock/skills) |
 | triage | [mattpocock/skills](https://github.com/mattpocock/skills) |
 | using-git-worktrees | [obra/superpowers](https://github.com/obra/superpowers) |
+| wait-what | [mattpocock/skills](https://github.com/mattpocock/skills) |
 | wasm-compatibility | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | wayfinder | [mattpocock/skills](https://github.com/mattpocock/skills) |
 | webwright | [microsoft/webwright](https://github.com/microsoft/webwright) |
 | writing-great-skills | [mattpocock/skills](https://github.com/mattpocock/skills) |
 
-**46 skills** across 15 sources. Last updated: 2026-08-05.
+**47 skills** across 15 sources. Last updated: 2026-08-06.
 
 <!-- SKILLS:END -->
