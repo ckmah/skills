@@ -68,7 +68,6 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | improve-codebase-architecture | [mattpocock/skills](https://github.com/mattpocock/skills) |
 | marimo-batch | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | marimo-notebook | [marimo-team/skills](https://github.com/marimo-team/skills) |
-| marimo-pair | [marimo-team/marimo-pair](https://github.com/marimo-team/marimo-pair) |
 | mermaid-diagrams | [ccheney/robust-skills](https://github.com/ccheney/robust-skills) |
 | notion-cli | [makenotion/skills](https://github.com/makenotion/skills) |
 | prototype | [mattpocock/skills](https://github.com/mattpocock/skills) |
@@ -87,8 +86,7 @@ Background sync runs every 15 minutes and when Cursor opens (if hooks are instal
 | wasm-compatibility | [marimo-team/skills](https://github.com/marimo-team/skills) |
 | wayfinder | [mattpocock/skills](https://github.com/mattpocock/skills) |
 | webwright | [microsoft/webwright](https://github.com/microsoft/webwright) |
-| writing-great-skills | [mattpocock/skills](https://github.com/mattpocock/skills) |
 
-**47 skills** across 15 sources. Last updated: 2026-08-06.
+**45 skills** across 14 sources. Last updated: 2026-08-10.
 
 <!-- SKILLS:END -->
