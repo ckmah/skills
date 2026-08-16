@@ -1,0 +1,2709 @@
+<title>__PAGE_TITLE__</title>
+<style>
+  :root {
+    --paper: #f7f6f1;
+    --paper-raised: #ffffff;
+    --ink: #1a1a15;
+    --ink-soft: #6b6a5f;
+    --ink-faint: #a8a79a;
+    --line: #1a1a15;
+    --hatch: rgba(26,26,21,0.05);
+    --dot: rgba(26,26,21,0.14);
+    --sheet-shadow: rgba(26,26,21,0.18);
+    --focus-fill: #1a1a15;
+    --focus-text: #f7f6f1;
+    --rail-w: 400px;
+    /* Kind accents. The three that ever share a screen — person, container,
+       store — were validated all-pairs for CVD separation and contrast in
+       both themes. Components appear only on their own levels, and externals
+       and the focus system stay neutral by design, so neither has to separate
+       from that trio. Colour is always a second cue: every card also carries
+       an icon, a border treatment, and an ink stereotype label. */
+    --k-person: #2a78d6;
+    --k-container: #1baf7a;
+    --k-component: #4a3aa7;
+    --k-store: #eb6834;
+    --k-external: #6b6a5f;
+    --k-system: #1a1a15;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #16160f;
+      --paper-raised: #1e1e15;
+      --ink: #efeee6;
+      --ink-soft: #a6a494;
+      --ink-faint: #6c6a5c;
+      --line: #efeee6;
+      --hatch: rgba(239,238,230,0.06);
+      --dot: rgba(239,238,230,0.16);
+      --sheet-shadow: rgba(0,0,0,0.5);
+      --focus-fill: #efeee6;
+      --focus-text: #16160f;
+      --k-person: #3987e5;
+      --k-container: #199e70;
+      --k-component: #9085e9;
+      --k-store: #d95926;
+      --k-external: #a6a494;
+      --k-system: #efeee6;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #16160f;
+    --paper-raised: #1e1e15;
+    --ink: #efeee6;
+    --ink-soft: #a6a494;
+    --ink-faint: #6c6a5c;
+    --line: #efeee6;
+    --hatch: rgba(239,238,230,0.06);
+    --dot: rgba(239,238,230,0.16);
+    --sheet-shadow: rgba(0,0,0,0.5);
+    --focus-fill: #efeee6;
+    --focus-text: #16160f;
+    --k-person: #3987e5;
+    --k-container: #199e70;
+    --k-component: #9085e9;
+    --k-store: #d95926;
+    --k-external: #a6a494;
+    --k-system: #efeee6;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    overflow: hidden;
+    height: 100dvh;
+    width: 100vw;
+  }
+
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    width: 100vw;
+    overflow: hidden;
+  }
+
+  .topbar {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+    padding: max(10px, env(safe-area-inset-top)) 14px 8px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+    z-index: 20;
+  }
+  .brand {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+  .brand-sub { color: var(--ink-soft); font-weight: 400; }
+  .crumbs {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .crumb {
+    font: inherit;
+    font-size: 15px;
+    color: var(--ink-soft);
+    background: none;
+    border: none;
+    padding: 9px 8px;
+    min-height: 44px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    /* Earlier crumbs shrink and ellipsize first; the current crumb (last)
+       is protected so the reader always sees a clean truncation, never a
+       word sliced mid-letter. */
+    flex: 0 1 auto;
+    min-width: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .crumb:not(:last-child) { flex-shrink: 3; }
+  .crumb:last-child { color: var(--ink); font-weight: 700; flex-shrink: 0; min-width: 44px; }
+  .crumb:not(:last-child):active { border-bottom: 2px solid var(--ink-faint); }
+  .crumb-sep { flex: 0 0 auto; color: var(--ink-faint); font-size: 14px; }
+
+  .stage-wrap {
+    position: relative;
+    flex: 1 1 auto;
+    overflow: hidden;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    background-image:
+      radial-gradient(circle, var(--dot) 1px, transparent 1px);
+    background-size: 22px 22px;
+    background-position: -1px -1px;
+  }
+  #canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+  #canvas.animate {
+    transition: transform 460ms cubic-bezier(.4,0,.2,1), opacity 260ms ease;
+  }
+  #canvas.animate-back {
+    transition: transform 420ms cubic-bezier(.4,0,.2,1), opacity 300ms ease 60ms;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #canvas.animate, #canvas.animate-back { transition: none; }
+  }
+
+  .node-card { cursor: pointer; }
+  .node-card[data-kind="person"]    { --accent: var(--k-person); }
+  .node-card[data-kind="container"] { --accent: var(--k-container); }
+  .node-card[data-kind="component"] { --accent: var(--k-component); }
+  .node-card[data-kind="store"]     { --accent: var(--k-store); }
+  .node-card[data-kind="external"]  { --accent: var(--k-external); }
+  .node-card[data-kind="system"]    { --accent: var(--k-system); }
+
+  /* Every kind is a rectangle now. A cylinder reads as "database", but its
+     curved top and bottom crowd the text inside it and — worse — they do not
+     coincide with the rectangle the edge router aims at, so edges missed the
+     drawn shape by up to the depth of the curve. The drum survives as an icon. */
+  .node-card rect.card {
+    fill: var(--paper-raised);
+    stroke: var(--line);
+    stroke-width: 1.6;
+  }
+  .node-card[data-kind="external"] rect.card { stroke-dasharray: 7 5; fill: transparent; }
+  .node-card[data-kind="system"] rect.card { stroke-width: 2.6; fill: var(--hatch); }
+  .node-card[data-kind="person"] rect.card { rx: 12; ry: 12; }
+  .node-card:focus-visible rect.card { stroke-width: 3; }
+  .node-card:active rect.card { fill: var(--hatch); }
+
+  .kind-bar { fill: var(--accent); }
+  .kind-icon {
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .card-text { fill: var(--ink); font-family: inherit; }
+  .stereo { font-size: 12px; letter-spacing: 0.1em; fill: var(--ink-soft); }
+  .title-t { font-size: 19px; font-weight: 700; }
+  .tech-t { font-size: 14px; fill: var(--ink-soft); font-style: italic; }
+  .short-t { font-size: 14px; fill: var(--ink-soft); }
+  .chevron { fill: var(--ink-soft); font-size: 26px; }
+  .info-dot circle.hit { fill: transparent; stroke: none; }
+  .info-dot circle.mark { fill: none; stroke: var(--ink-faint); stroke-width: 1.4; }
+  .info-dot text { fill: var(--ink-faint); font-size: 14px; font-weight: 700; text-anchor: middle; }
+
+  .boundary-rect {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1.4;
+    stroke-dasharray: 3 6;
+  }
+  .boundary-label {
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    fill: var(--ink-soft);
+  }
+  .boundary-label-bg { fill: var(--paper); }
+
+  .edge-line { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+  .edge-tag-bg { fill: var(--paper); stroke: var(--ink-faint); stroke-width: 1; }
+  .edge-tag-text { font-size: 12.5px; fill: var(--ink-soft); text-anchor: middle; }
+
+  .legend-glyph { stroke: var(--ink-soft); stroke-width: 1.4; fill: none; }
+
+  .hint {
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: var(--ink-soft);
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    padding: 7px 12px;
+    border-radius: 999px;
+    pointer-events: none;
+    transition: opacity 500ms ease;
+    white-space: nowrap;
+  }
+  .hint.hidden { opacity: 0; }
+
+  .controls {
+    position: absolute;
+    right: 12px;
+    bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    z-index: 15;
+  }
+  .btn-pill {
+    font: inherit;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper-raised);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .btn-pill:active { background: var(--hatch); }
+
+  .sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(20,20,16,0.28);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease;
+    z-index: 30;
+  }
+  .sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+
+  .sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 72dvh;
+    background: var(--paper);
+    border-top: 1.6px solid var(--line);
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -8px 24px var(--sheet-shadow);
+    transform: translateY(105%);
+    transition: transform 320ms cubic-bezier(.4,0,.2,1);
+    z-index: 31;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .sheet.open { transform: translateY(0); }
+  .sheet-grab {
+    width: 40px;
+    height: 4px;
+    background: var(--ink-faint);
+    border-radius: 999px;
+    margin: 10px auto 4px;
+    flex: 0 0 auto;
+  }
+  .sheet-body {
+    overflow-y: auto;
+    padding: 6px 20px 22px;
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .sheet-stereo {
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    margin: 6px 0 2px;
+  }
+  .sheet-title {
+    font-family: ui-monospace, monospace;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 2px;
+  }
+  .sheet-tech {
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 0 0 14px;
+  }
+  .sheet-desc {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0 0 16px;
+    max-width: 62ch;
+  }
+  .sheet-section-label {
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+    border-top: 1px solid var(--dot);
+    padding-top: 12px;
+  }
+  /* Files read as a dense manifest, not a stack of cards: one line each,
+     monospace, with the directory dimmed so the filename — the part you
+     actually scan for — carries the contrast. */
+  .sheet-files {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+  }
+  .sheet-files li {
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink);
+    padding: 0;
+    overflow-wrap: anywhere;
+  }
+  /* Items are separated by space, not rules. Only the gap between sections
+     earns a line — inside a list, hairlines just add visual noise. */
+  .sheet-files li + li { margin-top: 7px; }
+  .f-dir { color: var(--ink-faint); }
+  .f-base { color: var(--ink); font-weight: 600; }
+
+  /* Relations: a scannable three-part row — direction glyph, the other
+     card's name, then the verb — instead of a run-on sentence. The glyph
+     borrows the other card's kind accent so the rail and the drawing agree. */
+  .sheet-rels { margin: 0 0 16px; }
+  .rel {
+    display: grid;
+    grid-template-columns: 15px 1fr;
+    column-gap: 9px;
+    align-items: start;
+    padding: 0;
+  }
+  .rel + .rel { margin-top: 11px; }
+  .rel[data-kind="person"]    { --accent: var(--k-person); }
+  .rel[data-kind="container"] { --accent: var(--k-container); }
+  .rel[data-kind="component"] { --accent: var(--k-component); }
+  .rel[data-kind="store"]     { --accent: var(--k-store); }
+  .rel[data-kind="external"]  { --accent: var(--k-external); }
+  .rel[data-kind="system"]    { --accent: var(--k-system); }
+  .rel-dir {
+    font-family: ui-monospace, monospace;
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--accent, var(--ink-soft));
+    text-align: center;
+  }
+  .rel-name {
+    display: block;
+    font-family: ui-monospace, monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+  .rel-verb {
+    display: block;
+    font-size: 11.5px;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    margin-top: 1px;
+  }
+  .rel-flow {
+    font-family: ui-monospace, monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    margin-right: 4px;
+  }
+
+  /* Navigation: a key/action table, so the shortcut and what it does are
+     two columns you can scan down rather than a paragraph you must read. */
+  .nav-list {
+    display: grid;
+    /* The key column sizes to its widest key, but is capped so one long
+       chord ("Double-tap + drag") can't push the actions off to the right. */
+    grid-template-columns: fit-content(38%) 1fr;
+    column-gap: 12px;
+    align-items: baseline;
+    margin: 0 0 16px;
+  }
+  .nav-key {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3px;
+    padding: 7px 0;
+    white-space: nowrap;
+  }
+  .nav-act {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    padding: 0;
+  }
+  .nav-act b { color: var(--ink); font-weight: 600; }
+  /* Two children per row, so everything from the third child on starts a
+     new row and takes the leading space. */
+  .nav-list > :nth-child(n+3) { margin-top: 9px; }
+  .nav-sep { font-family: ui-monospace, monospace; font-size: 10px; color: var(--ink-faint); }
+
+  kbd {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    line-height: 1.4;
+    border: 1px solid var(--dot);
+    border-radius: 4px;
+    padding: 1px 5px;
+    background: var(--paper-raised);
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .sheet-open-btn {
+    font-family: ui-monospace, monospace;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    background: var(--focus-fill);
+    color: var(--focus-text);
+    border: none;
+    border-radius: 10px;
+    padding: 13px 18px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  .sheet-open-btn:active { opacity: 0.85; }
+  .sheet-close {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .legend-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .legend-row { display: flex; align-items: center; gap: 12px; }
+  .legend-swatch { flex: 0 0 auto; }
+  .legend-text { font-size: 13px; color: var(--ink); }
+  .legend-text small { display: block; color: var(--ink-soft); font-size: 11.5px; margin-top: 1px; }
+
+  /* ---------- shared shell (mobile defaults) ---------- */
+  .workspace { position: relative; flex: 1 1 auto; display: flex; min-height: 0; min-width: 0; }
+  .topbar-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
+  .kbd-hints { display: none; }
+
+  /* The page already themed itself from the OS setting; this makes the choice
+     explicit, which matters when the surrounding app and the reader disagree. */
+  .theme-btn {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-top: -2px;
+    background: none;
+    border: 1px solid var(--dot);
+    border-radius: 10px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 0;
+  }
+  .theme-btn:hover { border-color: var(--ink-faint); color: var(--ink); }
+  .theme-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .theme-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor;
+                   stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .theme-btn .icon-sun { display: none; }
+  :root[data-theme="dark"] .theme-btn .icon-sun { display: block; }
+  :root[data-theme="dark"] .theme-btn .icon-moon { display: none; }
+  .rail { display: none; }
+  .rail-grip { display: none; }
+  .nav-desktop { display: none; }
+  .detail-dismiss {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    font-family: ui-monospace, monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    background: none;
+    border: 1px solid var(--dot);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    padding: 7px 12px;
+    cursor: pointer;
+    margin-bottom: 14px;
+  }
+  .detail-dismiss:hover { border-color: var(--ink-faint); color: var(--ink); }
+
+  /* Hover preview banner. Declared at the mobile default — the sheets share
+     this markup, and there "just looking" does not exist, so it stays off
+     until the desktop rail turns it on. */
+  .rail-preview-note {
+    display: none;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+    border: 1px dashed var(--dot);
+    border-radius: 999px;
+    padding: 6px 11px;
+    margin-bottom: 14px;
+  }
+
+  /* Emphasis: the hovered/selected node keeps full contrast while every
+     unrelated edge and box drops back, so one box's connections read at a
+     glance instead of being traced by eye through the whole graph. */
+  .edge, .node-card { transition: opacity 160ms ease; }
+  .edge.dim { opacity: 0.15; }
+  .node-card.dim { opacity: 0.38; }
+  .edge.hot .edge-line { stroke: var(--ink); stroke-width: 2.2; }
+  .edge.hot .edge-tag-bg { stroke: var(--ink); }
+  .edge.hot .edge-tag-text { fill: var(--ink); }
+  .node-card.selected rect.card { stroke-width: 3.4; }
+  .node-card:focus-visible { outline: none; }
+  .node-card:focus-visible rect.card { stroke-width: 3.4; }
+  .info-dot { outline: none; }
+  .info-dot:focus-visible circle.mark { stroke: var(--ink); stroke-width: 2.6; }
+  .info-dot:focus-visible text { fill: var(--ink); }
+
+  @media (hover: hover) and (pointer: fine) {
+    .stage-wrap { cursor: grab; }
+    .stage-wrap.grabbing { cursor: grabbing; }
+    .node-card:hover rect.card { fill: var(--hatch); }
+    .info-dot:hover circle.mark { stroke: var(--ink); }
+    .info-dot:hover text { fill: var(--ink); }
+  }
+
+  /* ---------- desktop ---------- */
+  @media (min-width: 900px) {
+    .topbar { flex-direction: row; align-items: center; gap: 24px; padding: 12px 22px; }
+    .topbar-main { flex-direction: row; align-items: baseline; gap: 18px; }
+    .brand { flex: 0 0 auto; }
+    .crumb { font-size: 14px; min-height: 36px; padding: 6px 8px; }
+    .crumb:last-child { min-width: 0; }
+
+    .kbd-hints {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 4px 14px;
+      flex: 0 0 auto;
+      font-size: 11.5px;
+      color: var(--ink-soft);
+    }
+    .kbd-hints span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+
+    /* The detail panel becomes a persistent rail: reading about a box no
+       longer covers the diagram the box lives in. */
+    .rail {
+      display: flex;
+      flex: 0 0 var(--rail-w);
+      width: var(--rail-w);
+      border-left: 1px solid var(--line);
+      background: var(--paper);
+      min-width: 0;
+      transition: flex-basis 240ms cubic-bezier(.4,0,.2,1), width 240ms cubic-bezier(.4,0,.2,1);
+    }
+    /* No transition while a drag is in flight — the width should track the
+       pointer exactly, not chase it 240ms behind. */
+    .app.rail-dragging .rail { transition: none; }
+    .rail-body {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    .rail-slot {
+      padding: 20px 22px 32px;
+      font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    .rail-slot[hidden] { display: none; }
+
+    /* The handle is a bar sitting on the divider itself rather than a button
+       in a gutter: it reads as the edge you grab, it survives the collapse
+       (it is positioned against the rail's width, not inside the rail), and
+       the same affordance both resizes and hides. */
+    .rail-grip {
+      display: flex;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: var(--rail-w);
+      width: 20px;
+      transform: translateX(50%);
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      background: none;
+      border: none;
+      cursor: col-resize;
+      touch-action: none;
+      z-index: 14;
+    }
+    .rail-grip::before {
+      content: "";
+      width: 5px;
+      height: 68px;
+      border-radius: 999px;
+      background: var(--ink-faint);
+      transition: background 140ms ease, height 140ms ease;
+    }
+    .rail-grip:hover::before { background: var(--ink); height: 104px; }
+    .rail-grip:focus-visible::before { background: var(--ink); height: 104px; }
+    .rail-grip:focus-visible { outline: none; }
+    .app.rail-dragging .rail-grip::before { background: var(--ink); height: 128px; }
+    /* Collapsed, the divider is the window edge — so tuck the bar fully
+       inside it instead of centring it there and losing half the target. */
+    .app.rail-closed .rail-grip { transform: translateX(0); }
+
+    .rail-grip-tip {
+      position: absolute;
+      right: 26px;
+      padding: 7px 13px;
+      border-radius: 9px;
+      background: var(--paper-raised);
+      border: 1px solid var(--line);
+      font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 12.5px;
+      color: var(--ink);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 120ms ease;
+    }
+    .rail-grip:hover .rail-grip-tip { opacity: 1; }
+    .app.rail-dragging .rail-grip-tip { opacity: 0; }
+
+    .rail.collapsed .rail-body { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .rail, .rail-grip::before { transition: none; }
+    }
+
+    .rail.previewing .rail-preview-note { display: inline-block; }
+    .rail.previewing .detail-dismiss { display: none; }
+    .rail.previewing .sheet-open-btn { display: none !important; }
+    .rail.previewing #detailContent { opacity: 0.94; }
+
+    .sheet, .sheet-backdrop { display: none !important; }
+    #btnLegend { display: none; }
+    .detail-dismiss { display: inline-flex; }
+    .nav-desktop { display: block; }
+    .nav-list.nav-desktop { display: grid; }
+    .nav-touch { display: none; }
+
+    #btnFit { display: none; }
+  }
+
+</style>
+
+<div class="app" id="app">
+  <header class="topbar">
+    <div class="topbar-main">
+      <div class="brand">__PROJECT_NAME__ <span class="brand-sub">/ ARCHITECTURE</span></div>
+      <nav class="crumbs" id="crumbs"></nav>
+    </div>
+    <div class="kbd-hints" aria-hidden="true">
+      <span><kbd>click</kbd> open</span>
+      <span><kbd>&uarr;&darr;&larr;&rarr;</kbd> pan</span>
+      <span><kbd>scroll</kbd> zoom</span>
+      <span><kbd>0</kbd> reset</span>
+      <span><kbd>p</kbd> panel</span>
+      <span><kbd>Esc</kbd> back</span>
+    </div>
+    <button class="theme-btn" id="themeBtn" type="button" title="Switch to light mode">
+      <svg class="icon-moon" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9z"/>
+      </svg>
+      <svg class="icon-sun" viewBox="0 0 20 20" aria-hidden="true">
+        <circle cx="10" cy="10" r="3.6"/>
+        <path d="M10 1.6v2.2M10 16.2v2.2M3.5 3.5l1.6 1.6M14.9 14.9l1.6 1.6M1.6 10h2.2M16.2 10h2.2M3.5 16.5l1.6-1.6M14.9 5.1l1.6-1.6"/>
+      </svg>
+      <span class="sr-only" id="themeBtnText">Switch to light mode</span>
+    </button>
+  </header>
+
+  <div class="workspace">
+    <div class="stage-wrap" id="stageWrap">
+      <svg id="canvas" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- refX must sit on the tip (x=10 in the viewBox), not behind it.
+               markerUnits defaults to strokeWidth, so any refX short of the
+               tip pushes the arrowhead (10 - refX) * markerWidth / viewBox *
+               stroke-width past the polyline's last point — with refX=8 that
+               was 2.1px, i.e. the head landed inside the target card, on top
+               of its accent bar. Anchoring the tip makes the head end exactly
+               on the card border at every stroke width, hover included. -->
+          <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path>
+          </marker>
+        </defs>
+        <g id="content"></g>
+      </svg>
+      <div class="hint" id="hint">Drag to pan &middot; double-tap to zoom &middot; tap a box to open it</div>
+
+      <div class="controls">
+        <button class="btn-pill" id="btnLegend" type="button">Legend</button>
+        <button class="btn-pill" id="btnFit" type="button">Reset view</button>
+      </div>
+    </div>
+
+    <button class="rail-grip" id="railGrip" type="button"
+            aria-expanded="true" aria-controls="railBody"
+            title="Drag to resize · click to hide">
+      <span class="rail-grip-tip" aria-hidden="true">Resize</span>
+      <span class="sr-only" id="railToggleText">Hide panel</span>
+    </button>
+
+    <aside class="rail" id="rail" aria-label="Details">
+      <div class="rail-body" id="railBody">
+        <div class="rail-slot" id="railDetailHost" hidden></div>
+        <div class="rail-slot" id="railLegendHost"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="sheet-backdrop" id="backdrop"></div>
+
+  <div class="sheet" id="detailSheet" role="dialog" aria-modal="true">
+    <div class="sheet-grab"></div>
+    <button class="sheet-close" id="closeDetail" aria-label="Close">&times;</button>
+    <div class="sheet-body" id="sheetDetailHost"></div>
+  </div>
+
+  <div class="sheet" id="legendSheet" role="dialog" aria-modal="true">
+    <div class="sheet-grab"></div>
+    <button class="sheet-close" id="closeLegend" aria-label="Close">&times;</button>
+    <div class="sheet-body" id="sheetLegendHost"></div>
+  </div>
+
+  <!-- Single source of truth for both panels; JS re-homes these between the
+       mobile bottom sheets and the desktop rail on breakpoint changes. -->
+  <div id="detailContent">
+    <div class="rail-preview-note" id="dPreviewNote">PREVIEW &middot; CLICK TO PIN</div>
+    <button class="detail-dismiss" id="dDismiss" type="button">&larr; Legend</button>
+    <div class="sheet-stereo" id="dStereo"></div>
+    <div class="sheet-title" id="dTitle"></div>
+    <div class="sheet-tech" id="dTech"></div>
+    <p class="sheet-desc" id="dDesc"></p>
+    <div id="dFilesWrap">
+      <div class="sheet-section-label">FILES</div>
+      <ul class="sheet-files" id="dFiles"></ul>
+    </div>
+    <div id="dRelsWrap">
+      <div class="sheet-section-label">RELATIONS</div>
+      <div class="sheet-rels" id="dRels"></div>
+    </div>
+    <button class="sheet-open-btn" id="dOpenBtn" type="button"></button>
+  </div>
+
+  <div id="legendContent">
+      <div class="sheet-title" style="margin-bottom:14px;">Legend</div>
+      <div class="legend-grid" id="legendKinds"></div>
+      <div class="legend-grid" style="margin-top:12px;">
+        <div class="legend-row">
+          <svg class="legend-swatch" width="46" height="34"><line x1="4" y1="17" x2="42" y2="17" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#arrow)"/></svg>
+          <div class="legend-text">Relationship<small>labelled, points in the direction of the call</small></div>
+        </div>
+        <div class="legend-row">
+          <svg class="legend-swatch" width="46" height="34"><rect x="1" y="1" width="44" height="32" fill="none" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="2 5"/></svg>
+          <div class="legend-text">System boundary<small>dashed frame around a system's containers</small></div>
+        </div>
+        <div class="legend-row nav-touch">
+          <svg class="legend-swatch" width="46" height="34"><circle cx="23" cy="17" r="9" fill="none" stroke="var(--ink-soft)" stroke-width="1.4"/><path d="M23,9 v6 M23,21 v2" stroke="var(--ink-soft)" stroke-width="1.4"/></svg>
+          <div class="legend-text">Double-tap and drag<small>one finger, down to zoom in, up to zoom out</small></div>
+        </div>
+      </div>
+      <div class="sheet-section-label" style="margin-top:18px;">NAVIGATION</div>
+      <div class="nav-list nav-touch">
+        <div class="nav-key"><kbd>Tap &rsaquo;</kbd></div>
+        <div class="nav-act">Open a box's next layer</div>
+        <div class="nav-key"><kbd>Tap i</kbd></div>
+        <div class="nav-act">Read about a box without leaving this layer</div>
+        <div class="nav-key"><kbd>Drag</kbd></div>
+        <div class="nav-act">Pan &mdash; one finger, never two</div>
+        <div class="nav-key"><kbd>Double-tap</kbd></div>
+        <div class="nav-act">Zoom in one step</div>
+        <div class="nav-key"><kbd>Double-tap</kbd><span class="nav-sep">+</span><kbd>drag</kbd></div>
+        <div class="nav-act">Hold down, then drag <b>down</b> to zoom in, <b>up</b> to zoom out</div>
+        <div class="nav-key"><kbd>Crumb</kbd></div>
+        <div class="nav-act">Jump back up to an earlier layer</div>
+        <div class="nav-key"><kbd>FIT</kbd></div>
+        <div class="nav-act">See the whole layer at once</div>
+        <div class="nav-key"><kbd>+</kbd><span class="nav-sep">/</span><kbd>&minus;</kbd></div>
+        <div class="nav-act">Zoom a step at a time</div>
+      </div>
+      <div class="nav-list nav-desktop">
+        <div class="nav-key"><kbd>Click</kbd></div>
+        <div class="nav-act">Open the next layer of a box with a <b>&rsaquo;</b> corner</div>
+        <div class="nav-key"><kbd>Click i</kbd></div>
+        <div class="nav-act">Pin a box's details in this panel</div>
+        <div class="nav-key"><kbd>Hover</kbd></div>
+        <div class="nav-act">Preview a box here, and light up just its connections</div>
+        <div class="nav-key"><kbd>Drag</kbd></div>
+        <div class="nav-act">Pan the canvas</div>
+        <div class="nav-key"><kbd>&larr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd></div>
+        <div class="nav-act">Pan by steps &mdash; hold <b>Shift</b> to move faster</div>
+        <div class="nav-key"><kbd>Scroll</kbd></div>
+        <div class="nav-act">Zoom at the pointer</div>
+        <div class="nav-key"><kbd>Shift</kbd><span class="nav-sep">+</span><kbd>scroll</kbd></div>
+        <div class="nav-act">Pan sideways</div>
+        <div class="nav-key"><kbd>0</kbd></div>
+        <div class="nav-act">Back to this layer's default view &mdash; the whole layer, centered</div>
+        <div class="nav-key"><kbd>Esc</kbd></div>
+        <div class="nav-act">Clear the selection, then step up a layer</div>
+        <div class="nav-key"><kbd>Backspace</kbd></div>
+        <div class="nav-act">Always step up a layer</div>
+        <div class="nav-key"><kbd>Tab</kbd><span class="nav-sep">/</span><kbd>Enter</kbd></div>
+        <div class="nav-act">Move between boxes and their <b>i</b> buttons, then open one</div>
+        <div class="nav-key"><kbd>P</kbd></div>
+        <div class="nav-act">Hide or show this panel</div>
+      </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- content model ----------
+  // kind: person | system | external | container | component | store
+  // ===================== EDIT THIS BLOCK ONLY =====================
+  // The whole diagram is data. Everything below this block is generic
+  // machinery (routing, gestures, colour, icons, zoom) that needs no changes.
+  //
+  // kind: person | system | external | container | component | store
+  //   Each kind gets an accent colour, an icon, and a border treatment, so a
+  //   reader identifies it three ways over — colour is never the only cue.
+  //   person    rounded card, blue      a human actor
+  //   system    heavy border, ink       the system in focus (Context only)
+  //   external  dashed border, grey     third party, outside your code
+  //   container aqua                    an app / service / CLI / library you run
+  //   component violet                  a module inside a container
+  //   store     orange, drum icon       a database, or files on disk
+  //
+  // Every node: id, kind, name, short, desc (2-4 sentences), x, y, w, h.
+  //   Optional: tech, files[], drillTo (id of another level).
+  // Every edge: from, to, label — label the verb, not "uses". Keep labels to
+  //   13 characters or fewer; longer ones wrap to two lines and are hard to place.
+  //
+  // Sizing (full arithmetic in references/layout.md — do not guess, and do not
+  // eyeball a screenshot; scripts/audit.mjs measures it):
+  //   * cards are >= 200 wide, so the icon and stereotype row has room
+  //   * text starts 60 below the card top, then title 23/line, tech 23,
+  //     gap 6, short 18/line, and 14 of breathing room
+  //   * so: 1-line title + tech + 2-line short => h 175
+  //
+  // Coordinates are a plain SVG grid. The gutters between columns and rows are
+  // the edge router's entire budget — it can only turn corners in empty strips:
+  //   * snap everything to a column/row grid; >= 160px gutters both ways
+  //   * actors in their own column outside the boundary, stores in their own row
+  //   * growing W/H is free (the view is fitted), so open a gutter rather than
+  //     squeezing boxes
+  var LEVELS = {
+    context: {
+      title: "System Context",
+      crumb: "Context",
+      W: 1560, H: 960,
+      nodes: [
+        { id: "user", kind: "person", name: "Primary User", tech: null,
+          short: "who this is for",
+          desc: "Who uses the system and what they are trying to get done.",
+          x: 60, y: 390, w: 260, h: 150 },
+        { id: "sys", kind: "system", name: "The System", tech: "one-line positioning",
+          short: "what it does, in one line",
+          desc: "What this system is for, and what it ships as. Keep it to what a newcomer needs before they can read the container layer.",
+          x: 560, y: 380, w: 360, h: 175, drillTo: "containers" },
+        { id: "ext", kind: "external", name: "Third-Party Service", tech: "vendor · protocol",
+          short: "what it provides",
+          desc: "An external dependency your code calls but does not own.",
+          x: 1160, y: 390, w: 340, h: 155 }
+      ],
+      edges: [
+        { from: "user", to: "sys", label: "runs" },
+        { from: "sys", to: "ext", label: "queries" }
+      ]
+    },
+
+    containers: {
+      title: "Containers — inside The System",
+      crumb: "Containers",
+      W: 1700, H: 1100,
+      // `contains` states which cards belong inside the frame, so the audit
+      // can catch one that drifts in or out of it.
+      boundary: {
+        x: 400, y: 60, w: 900, h: 960, label: "The System — Software System",
+        contains: ["app", "core", "db"]
+      },
+      nodes: [
+        // row 0: entry points   row 1: shared core   row 2: stores
+        { id: "app", kind: "container", name: "Web App", tech: "TypeScript · React",
+          short: "what users touch",
+          desc: "A deployable unit. Name the runtime in `tech` so a reader knows what they would have to run.",
+          x: 480, y: 140, w: 260, h: 175, drillTo: "comp:app",
+          files: ["src/app/"] },
+        { id: "core", kind: "container", name: "Core Library", tech: "language · framework",
+          short: "shared engine",
+          desc: "The shared code every interface calls into.",
+          x: 480, y: 460, w: 260, h: 175 },
+        { id: "db", kind: "store", name: "Database", tech: "Postgres",
+          short: "what it holds",
+          desc: "Where state lives.",
+          x: 480, y: 780, w: 260, h: 175,
+          files: ["migrations/"] }
+      ],
+      edges: [
+        { from: "app", to: "core", label: "invokes" },
+        { from: "core", to: "db", label: "reads / writes" }
+      ]
+    },
+
+    // One component level per container worth opening. Key it "comp:<id>"
+    // and point the container's drillTo at it.
+    "comp:app": {
+      title: "Components — Web App",
+      crumb: "Web App",
+      W: 1200, H: 760,
+      nodes: [
+        { id: "a_ui", kind: "component", name: "views", tech: null,
+          short: "screens and routing",
+          desc: "A directory or package inside the container. `files` should list real paths so a reader can go straight to the code.",
+          x: 620, y: 300, w: 280, h: 155, files: ["src/app/views/"] },
+        { id: "a_api", kind: "component", name: "api client", tech: null,
+          short: "talks to the core",
+          desc: "What this module owns.",
+          x: 200, y: 300, w: 280, h: 155, files: ["src/app/api/"] }
+      ],
+      edges: [
+        { from: "a_ui", to: "a_api", label: "fetches via" }
+      ]
+    }
+  };
+  // =================== END OF EDIT BLOCK ===================
+
+  var ROOT_LEVEL = "context";
+
+  // ---------- svg helpers ----------
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs) {
+    var e = document.createElementNS(SVGNS, tag);
+    if (attrs) for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  // Greedy wrap to at most maxLines. An ellipsis is added only when words
+  // were actually dropped — text that happens to fill maxLines exactly is
+  // complete and must not be marked as truncated.
+  function wrapText(str, maxChars, maxLines) {
+    var words = String(str).split(/\s+/);
+    var lines = [];
+    var cur = "";
+    var truncated = false;
+    for (var i = 0; i < words.length; i++) {
+      var next = cur ? cur + " " + words[i] : words[i];
+      if (next.length > maxChars && cur) {
+        if (lines.length === maxLines - 1) { truncated = true; break; }
+        lines.push(cur);
+        cur = words[i];
+      } else {
+        cur = next;
+      }
+    }
+    if (cur) lines.push(cur);
+    if (truncated) {
+      var last = lines[lines.length - 1];
+      if (last.length > maxChars - 1) last = last.slice(0, maxChars - 1);
+      lines[lines.length - 1] = last.replace(/[\s,;:·]+$/, "") + "…";
+    }
+    return lines;
+  }
+
+  function nodeById(level, id) {
+    for (var i = 0; i < level.nodes.length; i++) if (level.nodes[i].id === id) return level.nodes[i];
+    return null;
+  }
+
+  var STEREO_LABEL = {
+    person: "PERSON",
+    system: "SOFTWARE SYSTEM",
+    external: "EXTERNAL SYSTEM",
+    container: "CONTAINER",
+    component: "COMPONENT",
+    store: "DATA STORE"
+  };
+
+  // Icons are line drawings in a 20x20 box, stroked in the kind's accent.
+  // They carry identity alongside colour, so the diagram still reads for a
+  // colour-blind viewer and in greyscale print.
+  function buildIcon(kind, ox, oy) {
+    var g = el("g", { class: "kind-icon", transform: "translate(" + ox + "," + oy + ")" });
+    function add(tag, attrs) { g.appendChild(el(tag, attrs)); }
+    if (kind === "person") {
+      add("circle", { cx: 10, cy: 6.4, r: 3.4 });
+      add("path", { d: "M3.8,16.8 q6.2,-7.2 12.4,0" });
+    } else if (kind === "system") {
+      add("rect", { x: 2.5, y: 4.5, width: 15, height: 11, rx: 1.5 });
+      add("rect", { x: 6.2, y: 7.9, width: 7.6, height: 4.2, rx: 1 });
+    } else if (kind === "external") {
+      add("path", { d: "M10.5,3.5 H16.5 V9.5" });
+      add("path", { d: "M16.5,3.5 L9.6,10.4" });
+      add("path", { d: "M13.4,11.6 v4.9 H3.5 V6.6 H8.4" });
+    } else if (kind === "container") {
+      add("rect", { x: 2.5, y: 4, width: 15, height: 12, rx: 2 });
+      add("path", { d: "M2.5,7.8 H17.5" });
+      add("circle", { cx: 5.1, cy: 5.9, r: 0.85 });
+    } else if (kind === "component") {
+      add("rect", { x: 2.6, y: 7.4, width: 8.6, height: 8.6, rx: 1.5 });
+      add("rect", { x: 8.8, y: 4, width: 8.6, height: 8.6, rx: 1.5 });
+    } else if (kind === "store") {
+      // the drum survives here, where curves cost nothing
+      add("ellipse", { cx: 10, cy: 5.6, rx: 6.3, ry: 2.2 });
+      add("path", { d: "M3.7,5.6 V14.4 c0,1.2 2.8,2.2 6.3,2.2 s6.3,-1 6.3,-2.2 V5.6" });
+      add("path", { d: "M3.7,10 c0,1.2 2.8,2.2 6.3,2.2 s6.3,-1 6.3,-2.2" });
+    }
+    return g;
+  }
+
+  function buildNodeGroup(n) {
+    var g = el("g", {
+      class: "node-card", "data-kind": n.kind, "data-node-id": n.id,
+      tabindex: "0", role: "button",
+      "aria-label": (STEREO_LABEL[n.kind] || "") + " " + n.name
+    });
+
+    g.appendChild(el("rect", {
+      x: n.x, y: n.y, width: n.w, height: n.h, rx: 3, ry: 3, class: "card"
+    }));
+
+    // Accent tick down the leading edge — the fastest read of "what kind is
+    // this" at a glance, and it survives being scaled down on a phone.
+    g.appendChild(el("rect", {
+      x: n.x + 1.4, y: n.y + 12, width: 4, height: Math.max(12, n.h - 24),
+      rx: 2, class: "kind-bar"
+    }));
+
+    g.appendChild(buildIcon(n.kind, n.x + 20, n.y + 16));
+
+    var padX = 52;                 // clears the accent bar and the icon
+    var innerW = n.w - padX - 18;
+    var stereo = el("text", { x: n.x + padX, y: n.y + 31, class: "card-text stereo" });
+    stereo.textContent = STEREO_LABEL[n.kind];
+    g.appendChild(stereo);
+
+    // Text below the icon row uses a running cursor, so a wrapped title
+    // pushes everything under it down instead of overlapping.
+    var y = n.y + 60;
+    var titleChars = Math.max(10, Math.floor((n.w - 40) / 11.4));
+    wrapText(n.name, titleChars, 2).forEach(function (ln) {
+      var t = el("text", { x: n.x + 20, y: y, class: "card-text title-t" });
+      t.textContent = ln;
+      g.appendChild(t);
+      y += 23;
+    });
+
+    if (n.tech) {
+      y += 3;
+      var tech = el("text", { x: n.x + 20, y: y, class: "card-text tech-t" });
+      tech.textContent = n.tech;
+      g.appendChild(tech);
+      y += 20;
+    }
+
+    y += 6;
+    var shortChars = Math.max(10, Math.floor((n.w - 40) / 8.6));
+    wrapText(n.short, shortChars, 2).forEach(function (ln) {
+      var t = el("text", { x: n.x + 20, y: y, class: "card-text short-t" });
+      t.textContent = ln;
+      g.appendChild(t);
+      y += 18;
+    });
+
+    // Small visible ring with a much larger invisible hit-circle, so the
+    // affordance stays finger-sized without crowding the card.
+    var ix = n.x + n.w - 26, iy = n.y + 26;
+    var info = el("g", {
+      class: "info-dot", "data-info-id": n.id,
+      tabindex: "0", role: "button", "aria-label": "About " + n.name
+    });
+    info.appendChild(el("circle", { cx: ix, cy: iy, r: 22, class: "hit" }));
+    info.appendChild(el("circle", { cx: ix, cy: iy, r: 12, class: "mark" }));
+    var itxt = el("text", { x: ix, y: iy + 5 });
+    itxt.textContent = "i";
+    info.appendChild(itxt);
+    g.appendChild(info);
+
+    if (n.drillTo) {
+      var chev = el("text", { x: n.x + n.w - 28, y: n.y + n.h - 16, class: "chevron", "text-anchor": "middle" });
+      chev.textContent = "\u203a";
+      g.appendChild(chev);
+    }
+
+    return g;
+  }
+
+  // ---------- orthogonal edge routing ----------
+  // C4 diagrams read as right-angle routes, not diagonals. Each edge leaves
+  // a card face, runs to a "bus" line in the gap between rows/columns, and
+  // enters the target face square-on. Candidate routes are scored so the one
+  // that cuts through the fewest other cards wins.
+  var EDGE_MARGIN = 12;
+  var LABEL_H = 20;
+  var STUB = 18;
+  // Daylight a tag must keep from every card. Tags are opaque, so one parked
+  // against a border reads as part of the card instead of part of the line.
+  var LABEL_GAP = 8;
+  // The stretch of line the arrowhead occupies at the target end. A tag is
+  // painted above every line, so one straying into this zone masks the shaft
+  // and the head reads as a detached chevron floating off the card.
+  var ARROW_ZONE = 22;
+  var START_ZONE = 12;
+  var AROUND = 34;   // clearance when a route has to pass outside both cards
+  var FACES = ["t", "b", "l", "r"];
+  var DIRS = { t: { x: 0, y: -1 }, b: { x: 0, y: 1 }, l: { x: -1, y: 0 }, r: { x: 1, y: 0 } };
+
+  function nodeCenter(n) { return { x: n.x + n.w / 2, y: n.y + n.h / 2 }; }
+
+  function facePoint(n, face, off) {
+    var c = nodeCenter(n);
+    if (face === "t") return { x: c.x + off, y: n.y };
+    if (face === "b") return { x: c.x + off, y: n.y + n.h };
+    if (face === "l") return { x: n.x, y: c.y + off };
+    return { x: n.x + n.w, y: c.y + off };
+  }
+
+  function segmentHits(p, q, level, a, b) {
+    var x0 = Math.min(p.x, q.x) - 1, x1 = Math.max(p.x, q.x) + 1;
+    var y0 = Math.min(p.y, q.y) - 1, y1 = Math.max(p.y, q.y) + 1;
+    var hits = 0;
+    for (var i = 0; i < level.nodes.length; i++) {
+      var n = level.nodes[i];
+      if (n === a || n === b) continue;
+      if (x1 > n.x - EDGE_MARGIN && x0 < n.x + n.w + EDGE_MARGIN &&
+          y1 > n.y - EDGE_MARGIN && y0 < n.y + n.h + EDGE_MARGIN) hits++;
+    }
+    return hits;
+  }
+
+  // Leave each face perpendicular for a short stub, then join the two stubs
+  // with one bus (parallel faces) or a single corner (perpendicular faces).
+  function stubEnd(n, face, off) {
+    var p = facePoint(n, face, off), d = DIRS[face];
+    return { x: p.x + d.x * STUB, y: p.y + d.y * STUB };
+  }
+
+  // Where the connecting bus may sit, as an absolute coordinate. The midpoints
+  // alone are not enough: when two cards exit the same way (both tops, say),
+  // every position between the two stubs lies inside one of them, and the only
+  // route the router can express doubles back through the card it just left.
+  // The last two candidates run outside both cards, which is the way around.
+  function busCandidates(a, b, p2, q2, vertical) {
+    var s0 = vertical ? p2.y : p2.x, e0 = vertical ? q2.y : q2.x;
+    var lo = vertical ? Math.min(a.y, b.y) : Math.min(a.x, b.x);
+    var hi = vertical ? Math.max(a.y + a.h, b.y + b.h) : Math.max(a.x + a.w, b.x + b.w);
+    return [s0 + (e0 - s0) * 0.5, s0 + (e0 - s0) * 0.28, s0 + (e0 - s0) * 0.72,
+            s0, e0, lo - AROUND, hi + AROUND];
+  }
+
+  // A route must never re-enter the cards it joins. Ports sit ON the border and
+  // stubs point outward, so any overlap with the interior is a fault — and it is
+  // precisely the collision the ordinary card test cannot see, because that test
+  // skips the edge's own two endpoints.
+  function entersOwnCard(pts, a, b) {
+    var hits = 0;
+    for (var i = 0; i < pts.length - 1; i++) {
+      var p = pts[i], q = pts[i + 1];
+      var x0 = Math.min(p.x, q.x), x1 = Math.max(p.x, q.x);
+      var y0 = Math.min(p.y, q.y), y1 = Math.max(p.y, q.y);
+      for (var k = 0; k < 2; k++) {
+        var n = k ? b : a;
+        if (x1 > n.x + 0.5 && x0 < n.x + n.w - 0.5 &&
+            y1 > n.y + 0.5 && y0 < n.y + n.h - 0.5) hits++;
+      }
+    }
+    return hits;
+  }
+
+  function facePath(a, aFace, aOff, b, bFace, bOff, bus) {
+    var p = facePoint(a, aFace, aOff), q = facePoint(b, bFace, bOff);
+    var dp = DIRS[aFace], dq = DIRS[bFace];
+    var p2 = { x: p.x + dp.x * STUB, y: p.y + dp.y * STUB };
+    var q2 = { x: q.x + dq.x * STUB, y: q.y + dq.y * STUB };
+    var pH = dp.x !== 0, qH = dq.x !== 0;
+    var mid;
+    if (pH && qH) {
+      mid = [{ x: bus, y: p2.y }, { x: bus, y: q2.y }];
+    } else if (!pH && !qH) {
+      mid = [{ x: p2.x, y: bus }, { x: q2.x, y: bus }];
+    } else {
+      // Perpendicular faces meet at a single corner, and there are two of
+      // them. Only offering one is what let a fanned port drag the corner
+      // inside the target card with no bus left to tune it back out.
+      var cA = pH ? { x: q2.x, y: p2.y } : { x: p2.x, y: q2.y };
+      var cB = pH ? { x: p2.x, y: q2.y } : { x: q2.x, y: p2.y };
+      mid = [bus === 1 ? cB : cA];
+    }
+    var raw = [p, p2].concat(mid, [q2, q]);
+    var out = [raw[0]];
+    for (var i = 1; i < raw.length; i++) {
+      var prev = out[out.length - 1];
+      if (Math.abs(raw[i].x - prev.x) > 0.5 || Math.abs(raw[i].y - prev.y) > 0.5) out.push(raw[i]);
+    }
+    return out;
+  }
+
+  function pathCost(pts, level, a, b, aFace, bFace, lw, lh) {
+    var cost = 0, len = 0;
+    cost += entersOwnCard(pts, a, b) * 1500;
+    for (var s = 0; s < pts.length - 1; s++) {
+      cost += segmentHits(pts[s], pts[s + 1], level, a, b) * 1000;
+      len += Math.abs(pts[s + 1].x - pts[s].x) + Math.abs(pts[s + 1].y - pts[s].y);
+    }
+    // Prefer faces that actually point at the other card, so edges don't
+    // wrap around the back of a box when a clean exit exists.
+    var ac = nodeCenter(a), bc = nodeCenter(b);
+    var da = DIRS[aFace], db = DIRS[bFace];
+    if (da.x * (bc.x - ac.x) + da.y * (bc.y - ac.y) <= 0) cost += 120;
+    if (db.x * (ac.x - bc.x) + db.y * (ac.y - bc.y) <= 0) cost += 120;
+    // A route also has to carry its label. Between two adjacent cards the
+    // shortest path has nowhere to put one, so reward routes that leave the
+    // tag somewhere clear — enough to beat the face bias, never a collision.
+    if (lw) {
+      var spot = labelSpot(pts, level, lw, lh);
+      var clr = labelClearance(spot.x, spot.y, lw, lh, level);
+      cost -= Math.min(clr, 20) * 6;
+      // A route whose best tag position still touches a card is a bad route,
+      // not just an unlucky one — make that outrank the face bias.
+      if (clr < LABEL_GAP) cost += (LABEL_GAP - clr) * 30;
+      if (boxHitsZone(spot.x, spot.y, lw, lh,
+                      endZone(mergeCollinear(pts), true, ARROW_ZONE))) cost += 150;
+    }
+    return cost + len * 0.01 + pts.length * 3;
+  }
+
+  function labelBox(text) {
+    if (!text) return null;
+    var lines = labelLines(text);
+    var longest = lines.reduce(function (m, l) { return Math.max(m, l.length); }, 0);
+    return {
+      lines: lines,
+      w: Math.max(48, longest * 7.5 + 16),
+      h: lines.length > 1 ? 36 : LABEL_H
+    };
+  }
+
+  // Search every face pair and bus position; collisions dominate the cost.
+  function bestRoute(a, aOff, b, bOff, level, lb) {
+    var best = null;
+    for (var i = 0; i < FACES.length; i++) {
+      for (var j = 0; j < FACES.length; j++) {
+        var af = FACES[i], bf = FACES[j];
+        var p2 = stubEnd(a, af, aOff), q2 = stubEnd(b, bf, bOff);
+        var vertical = DIRS[af].x === 0;
+        var parallel = (DIRS[af].x !== 0) === (DIRS[bf].x !== 0);
+        var cands = parallel ? busCandidates(a, b, p2, q2, vertical) : [0, 1];
+        for (var k = 0; k < cands.length; k++) {
+          var pts = facePath(a, af, aOff, b, bf, bOff, cands[k]);
+          var cost = pathCost(pts, level, a, b, af, bf, lb && lb.w, lb && lb.h);
+          if (!best || cost < best.cost) {
+            best = { pts: pts, cost: cost, aFace: af, bFace: bf };
+          }
+        }
+      }
+    }
+    return best;
+  }
+
+  function buildRoutes(level) {
+    // 1. pick the face pair whose best route hits the fewest cards
+    var routes = level.edges.map(function (e) {
+      var a = nodeById(level, e.from), b = nodeById(level, e.to);
+      if (!a || !b) return null;
+      var lb = labelBox(e.label);
+      var r = bestRoute(a, 0, b, 0, level, lb);
+      return { e: e, a: a, b: b, lb: lb, aFace: r.aFace, bFace: r.bFace, aOff: 0, bOff: 0 };
+    });
+
+    // 2. fan out ports that share a face so parallel edges don't stack
+    var byFace = {};
+    routes.forEach(function (r) {
+      if (!r) return;
+      var ka = r.a.id + ":" + r.aFace, kb = r.b.id + ":" + r.bFace;
+      (byFace[ka] = byFace[ka] || []).push({ r: r, end: "a" });
+      (byFace[kb] = byFace[kb] || []).push({ r: r, end: "b" });
+    });
+    Object.keys(byFace).forEach(function (k) {
+      var list = byFace[k];
+      var face = k.charAt(k.length - 1);
+      var alongX = (face === "t" || face === "b");
+      list.sort(function (m, n) {
+        var mo = nodeCenter(m.end === "a" ? m.r.b : m.r.a);
+        var no = nodeCenter(n.end === "a" ? n.r.b : n.r.a);
+        return alongX ? mo.x - no.x : mo.y - no.y;
+      });
+      list.forEach(function (item, idx) {
+        var n = item.end === "a" ? item.r.a : item.r.b;
+        var span = (alongX ? n.w : n.h) * 0.62;
+        var frac = list.length === 1 ? 0 : idx / (list.length - 1) - 0.5;
+        item.r[item.end + "Off"] = frac * span;
+      });
+    });
+
+    // 3. final path, re-optimised with the fanned ports in place
+    routes.forEach(function (r) {
+      if (!r) return;
+      var best = null;
+      var fp2 = stubEnd(r.a, r.aFace, r.aOff), fq2 = stubEnd(r.b, r.bFace, r.bOff);
+      var fParallel = (DIRS[r.aFace].x !== 0) === (DIRS[r.bFace].x !== 0);
+      var fCands = fParallel
+        ? busCandidates(r.a, r.b, fp2, fq2, DIRS[r.aFace].x === 0)
+        : [0, 1];
+      for (var k = 0; k < fCands.length; k++) {
+        var pts = facePath(r.a, r.aFace, r.aOff, r.b, r.bFace, r.bOff, fCands[k]);
+        var cost = pathCost(pts, level, r.a, r.b, r.aFace, r.bFace,
+                            r.lb && r.lb.w, r.lb && r.lb.h);
+        if (!best || cost < best.cost) best = { pts: pts, cost: cost };
+      }
+      r.pts = best.pts;
+    });
+    return routes;
+  }
+
+  // Signed gap between a label box and a card: negative means overlap, so
+  // maximising the worst gap picks the most open spot on the whole route.
+  function labelClearance(cx, cy, w, h, level) {
+    var x0 = cx - w / 2, x1 = cx + w / 2, y0 = cy - h / 2, y1 = cy + h / 2;
+    var worst = Infinity;
+    for (var i = 0; i < level.nodes.length; i++) {
+      var n = level.nodes[i];
+      var dx = Math.max(n.x - x1, x0 - (n.x + n.w));
+      var dy = Math.max(n.y - y1, y0 - (n.y + n.h));
+      var d = Math.max(dx, dy);
+      if (d < worst) worst = d;
+    }
+    return Math.min(worst, 28);
+  }
+
+  // facePath emits a point per bus corner even when the bus is degenerate, so
+  // a plain straight route arrives as three or four collinear stubs. Scored
+  // separately every one of them looks too short to carry a tag, and the tag
+  // falls through to the unscored fallback — flush against a card. Collapsing
+  // collinear runs first is what makes the candidate search see the real line.
+  function mergeCollinear(pts) {
+    if (pts.length < 3) return pts.slice();
+    var out = [pts[0]];
+    for (var i = 1; i < pts.length - 1; i++) {
+      var a = out[out.length - 1], b = pts[i], c = pts[i + 1];
+      var straightH = Math.abs(b.y - a.y) < 0.5 && Math.abs(c.y - b.y) < 0.5;
+      var straightV = Math.abs(b.x - a.x) < 0.5 && Math.abs(c.x - b.x) < 0.5;
+      if (straightH || straightV) continue;
+      out.push(b);
+    }
+    out.push(pts[pts.length - 1]);
+    return out;
+  }
+
+  // The first `dist` px of the route measured from one end, as an axis-aligned
+  // box. Used to fence tags out of the arrowhead's stretch of line.
+  function endZone(pts, atEnd, dist) {
+    var P = atEnd ? pts[pts.length - 1] : pts[0];
+    var Q = atEnd ? pts[pts.length - 2] : pts[1];
+    var segLen = Math.abs(Q.x - P.x) + Math.abs(Q.y - P.y);
+    var t = Math.min(1, dist / (segLen || 1));
+    var R = { x: P.x + (Q.x - P.x) * t, y: P.y + (Q.y - P.y) * t };
+    return {
+      x0: Math.min(P.x, R.x), x1: Math.max(P.x, R.x),
+      y0: Math.min(P.y, R.y), y1: Math.max(P.y, R.y)
+    };
+  }
+
+  function boxHitsZone(cx, cy, w, h, z) {
+    var pad = 3;
+    return z.x1 >= cx - w / 2 - pad && z.x0 <= cx + w / 2 + pad &&
+           z.y1 >= cy - h / 2 - pad && z.y0 <= cy + h / 2 + pad;
+  }
+
+  function boxesOverlap(cx, cy, w, h, t, pad) {
+    return cx - w / 2 - pad < t.x1 && cx + w / 2 + pad > t.x0 &&
+           cy - h / 2 - pad < t.y1 && cy + h / 2 + pad > t.y0;
+  }
+
+  // `taken` is the running list of tags already placed on this level. Two tags
+  // stacked on the same spot hide each other's text just as badly as a tag on
+  // a card, so the final placement pass steers around them.
+  function labelSpot(rawPts, level, lw, lh, taken) {
+    var best = null;
+    var TS = [0.15, 0.28, 0.4, 0.5, 0.6, 0.72, 0.85];
+    var pts = mergeCollinear(rawPts);
+    var zEnd = endZone(pts, true, ARROW_ZONE);
+    var zStart = endZone(pts, false, START_ZONE);
+    for (var i = 0; i < pts.length - 1; i++) {
+      var p = pts[i], q = pts[i + 1];
+      var segLen = Math.abs(q.x - p.x) + Math.abs(q.y - p.y);
+      if (segLen < 26) continue;
+      var horiz = Math.abs(q.x - p.x) > Math.abs(q.y - p.y);
+      // Sitting slightly beside the line is a normal place for a tag, and
+      // it's often the only spot clear of the cards on a busy layer. The wide
+      // rungs are the escape hatch for short routes between adjacent cards,
+      // where nothing on the line itself clears LABEL_GAP.
+      var offs = [0, -(lh / 2 + 9), lh / 2 + 9, -(lh / 2 + 26), lh / 2 + 26];
+      for (var ti = 0; ti < TS.length; ti++) {
+        for (var o = 0; o < offs.length; o++) {
+          var x = p.x + (q.x - p.x) * TS[ti] + (horiz ? 0 : offs[o]);
+          var y = p.y + (q.y - p.y) * TS[ti] + (horiz ? offs[o] : 0);
+          var clr = labelClearance(x, y, lw, lh, level);
+          var score = clr + segLen * 0.015 - Math.abs(offs[o]) * 0.06;
+          // Anything short of LABEL_GAP is a defect, not a preference, so it
+          // has to lose to a further-out rung rather than merely score lower.
+          if (clr < LABEL_GAP) score -= (LABEL_GAP - clr) * 14;
+          if (boxHitsZone(x, y, lw, lh, zEnd)) score -= 400;
+          if (boxHitsZone(x, y, lw, lh, zStart)) score -= 200;
+          if (taken) {
+            for (var tk = 0; tk < taken.length; tk++) {
+              if (boxesOverlap(x, y, lw, lh, taken[tk], 4)) score -= 60;
+            }
+          }
+          if (!best || score > best.score) best = { x: x, y: y, score: score };
+        }
+      }
+    }
+    if (best) return { x: best.x, y: best.y };
+    var m = Math.floor((pts.length - 1) / 2);
+    return { x: (pts[m].x + pts[m + 1].x) / 2, y: (pts[m].y + pts[m + 1].y) / 2 };
+  }
+
+  // Long labels wrap to two lines: the gaps between cards are narrower than
+  // a single-line tag for anything wordy, so halving the width is what
+  // actually lets the tag sit in open space.
+  function labelLines(text) {
+    if (text.length <= 13) return [text];
+    // Half the character count is only the right wrap width when the words
+    // happen to split evenly; when they don't, the greedy wrap drops the tail
+    // and the tag renders truncated ("reads (index…"). Widen until every word
+    // survives, then stop — the narrowest wrap that loses nothing.
+    var flat = String(text).replace(/\s+/g, " ").trim();
+    for (var m = Math.ceil(flat.length / 2) + 2; m <= flat.length; m++) {
+      var ln = wrapText(flat, m, 2);
+      if (ln.join(" ") === flat) return ln;
+    }
+    return [flat];
+  }
+
+  function buildEdgeLine(r) {
+    var g = el("g", { class: "edge", "data-from": r.e.from, "data-to": r.e.to });
+    g.appendChild(el("polyline", {
+      points: r.pts.map(function (p) { return p.x + "," + p.y; }).join(" "),
+      class: "edge-line", "marker-end": "url(#arrow)"
+    }));
+    return g;
+  }
+
+  // Labels are built into their own layer so every tag sits above every
+  // line. Drawn inline, a later edge paints across an earlier edge's tag and
+  // the label reads as struck through.
+  function buildEdgeLabel(r, level, taken) {
+    if (!r.lb) return null;
+    var g = el("g", { class: "edge", "data-from": r.e.from, "data-to": r.e.to });
+    var lines = r.lb.lines, w = r.lb.w, h = r.lb.h;
+    var spot = labelSpot(r.pts, level, w, h, taken);
+    if (taken) {
+      taken.push({ x0: spot.x - w / 2, x1: spot.x + w / 2,
+                   y0: spot.y - h / 2, y1: spot.y + h / 2 });
+    }
+    g.appendChild(el("rect", {
+      x: spot.x - w / 2, y: spot.y - h / 2,
+      width: w, height: h, rx: 5, class: "edge-tag-bg"
+    }));
+    lines.forEach(function (ln, i) {
+      var baseline = lines.length > 1
+        ? spot.y - h / 2 + 14 + i * 15
+        : spot.y + 4.5;
+      var t = el("text", { x: spot.x, y: baseline, class: "edge-tag-text" });
+      t.textContent = ln;
+      g.appendChild(t);
+    });
+    return g;
+  }
+
+  function buildBoundary(b) {
+    var g = el("g");
+    g.appendChild(el("rect", { x: b.x, y: b.y, width: b.w, height: b.h, rx: 14, ry: 14, class: "boundary-rect" }));
+    // Placeholder mask; sized exactly from the rendered text in renderLevel,
+    // because any char-count estimate is wrong for some font or some label.
+    g.appendChild(el("rect", { x: b.x + 18, y: b.y - 9, width: 10, height: 18, class: "boundary-label-bg" }));
+    var t = el("text", { x: b.x + 22, y: b.y + 4, class: "boundary-label" });
+    t.textContent = b.label;
+    g.appendChild(t);
+    return g;
+  }
+
+  // ---------- app state ----------
+  var svg = document.getElementById("canvas");
+  var content = document.getElementById("content");
+  var stageWrap = document.getElementById("stageWrap");
+  var hint = document.getElementById("hint");
+  var crumbsEl = document.getElementById("crumbs");
+  var rail = document.getElementById("rail");
+  var railBody = document.getElementById("railBody");
+  var railGrip = document.getElementById("railGrip");
+  var railToggleText = document.getElementById("railToggleText");
+  var railDetailHost = document.getElementById("railDetailHost");
+  var railLegendHost = document.getElementById("railLegendHost");
+  var sheetDetailHost = document.getElementById("sheetDetailHost");
+  var sheetLegendHost = document.getElementById("sheetLegendHost");
+  var detailContent = document.getElementById("detailContent");
+  var legendContent = document.getElementById("legendContent");
+
+  var mqDesktop = window.matchMedia("(min-width: 900px)");
+  var mqFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+  function isDesktop() { return mqDesktop.matches; }
+
+  var selectedId = null;
+  var hoverId = null;
+  // What the rail is currently *showing* details for. Equals selectedId when a
+  // card is pinned; a hovered card can borrow it without committing anything.
+  var railShownId = null;
+  var previewId = null;
+  var railCollapsed = false;
+
+  var history = [{ key: ROOT_LEVEL }];
+  var view = { scale: 1, tx: 0, ty: 0, baseScale: 1 };
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Mobile-first reading scale: on a phone, a whole architecture diagram
+  // never fits AND stays legible at the same time, so we don't try. Every
+  // level opens at a fixed, comfortably-legible zoom (title text ~19px on
+  // screen) centered on that level's busiest area, and the rest is reached
+  // by panning — the same trade-off a map app makes. INITIAL_SCALE=1 means
+  // "no shrink at all": SVG units render 1:1 as CSS pixels.
+  var INITIAL_SCALE = 1;
+
+  function currentKey() { return history[history.length - 1].key; }
+  function currentLevel() { return LEVELS[currentKey()]; }
+
+  function applyTransform() {
+    svg.style.transform = "translate(" + view.tx + "px," + view.ty + "px) scale(" + view.scale + ")";
+  }
+
+  // The busiest spot in a level: the centroid of its nodes. Used as the
+  // camera target when a level first opens on a phone, so the reader lands
+  // somewhere useful instead of at a literal top-left corner.
+  function levelFocus(level) {
+    var sx = 0, sy = 0;
+    level.nodes.forEach(function (nd) { sx += nd.x + nd.w / 2; sy += nd.y + nd.h / 2; });
+    return { x: sx / level.nodes.length, y: sy / level.nodes.length };
+  }
+
+  // Tight box around everything actually drawn — the declared level W/H
+  // carry slack margins, so fitting to those wastes real screen space.
+  function contentBounds(level) {
+    var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    level.nodes.forEach(function (nd) {
+      minX = Math.min(minX, nd.x); minY = Math.min(minY, nd.y);
+      maxX = Math.max(maxX, nd.x + nd.w); maxY = Math.max(maxY, nd.y + nd.h);
+    });
+    if (level.boundary) {
+      var b = level.boundary;
+      minX = Math.min(minX, b.x); minY = Math.min(minY, b.y - 14);
+      maxX = Math.max(maxX, b.x + b.w); maxY = Math.max(maxY, b.y + b.h);
+    }
+    return {
+      cx: (minX + maxX) / 2, cy: (minY + maxY) / 2,
+      w: Math.max(1, maxX - minX), h: Math.max(1, maxY - minY)
+    };
+  }
+
+  // Default view for a level. The two form factors want opposite things:
+  // a phone can't show a whole diagram legibly, so it opens at 1:1 and pans;
+  // a desktop window usually can, so it opens with the layer laid out whole —
+  // clamped so it never shrinks below readable or blows past 1:1.
+  function computeInitial(level) {
+    var vw = stageWrap.clientWidth, vh = stageWrap.clientHeight;
+    if (isDesktop()) {
+      var b = contentBounds(level);
+      var s = Math.min((vw - 96) / b.w, (vh - 96) / b.h);
+      s = Math.max(0.55, Math.min(s, 1.1));
+      return { scale: s, tx: vw / 2 - b.cx * s, ty: vh / 2 - b.cy * s };
+    }
+    var focus = levelFocus(level);
+    var ms = INITIAL_SCALE;
+    return { scale: ms, tx: vw / 2 - focus.x * ms, ty: vh / 2 - focus.y * ms };
+  }
+
+  // Overview: the whole level shrunk to fit at once, however small that is —
+  // an explicit zoomed-out summary reached via FIT, never a default.
+  function computeOverview(level) {
+    var vw = stageWrap.clientWidth, vh = stageWrap.clientHeight;
+    var b = contentBounds(level);
+    var s = Math.min((vw - 56) / b.w, (vh - 56) / b.h);
+    return { scale: s, tx: vw / 2 - b.cx * s, ty: vh / 2 - b.cy * s };
+  }
+
+  // World point currently centered by a computed view — used as the anchor
+  // for drill/back zoom transitions so they scale in place without a pop.
+  function viewCenterWorld(v) {
+    return {
+      x: (stageWrap.clientWidth / 2 - v.tx) / v.scale,
+      y: (stageWrap.clientHeight / 2 - v.ty) / v.scale
+    };
+  }
+
+  function clampScale(level, s) {
+    var overview = computeOverview(level).scale;
+    var min = Math.min(overview, view.baseScale) * 0.85;
+    var max = view.baseScale * 3.5;
+    return Math.max(min, Math.min(max, s));
+  }
+
+  // ---------- panels: one set of content, two homes ----------
+  function rehome() {
+    if (isDesktop()) {
+      railDetailHost.appendChild(detailContent);
+      railLegendHost.appendChild(legendContent);
+      closeSheet();
+    } else {
+      sheetDetailHost.appendChild(detailContent);
+      sheetLegendHost.appendChild(legendContent);
+      // Hover preview is a desktop-only idea; a sheet must only ever show a
+      // card the reader actually committed to.
+      previewId = null;
+      railShownId = selectedId;
+      rail.classList.remove("previewing");
+    }
+    hint.textContent = isDesktop()
+      ? "Drag to pan · scroll to zoom · click a box to open it"
+      : "Drag to pan · double-tap to zoom · tap a box to open it";
+
+    // On desktop the default view already shows the whole layer, so a
+    // separate "fit" would just repeat it — the useful control there is
+    // "put the view back". On mobile the default is a 1:1 reading view, so
+    // fitting the layer really is a different thing to offer.
+    var btnFit = document.getElementById("btnFit");
+    btnFit.setAttribute("aria-label", "Reset the view");
+
+    updateRail();
+  }
+
+  function resetOrFit(animated) {
+    if (isDesktop()) settle(animated); else fit(animated);
+  }
+
+  // The rail shows, in order of precedence: a hover preview, the pinned
+  // selection, or the legend. Preview never mutates selectedId, so leaving the
+  // card falls straight back to whatever was underneath.
+  function updateRail() {
+    if (!isDesktop()) return;
+    var showId = previewId || selectedId;
+    if (showId && showId !== railShownId) renderDetailFor(showId);
+    railShownId = showId;
+    railDetailHost.hidden = !showId;
+    railLegendHost.hidden = !!showId;
+    rail.classList.toggle("previewing", !!previewId && previewId !== selectedId);
+  }
+
+  // Hover preview, desktop only. Committing nothing means the reader can sweep
+  // the diagram and read each box in turn without losing their pinned card.
+  function setPreview(id) {
+    if (!isDesktop()) id = null;
+    if (id === previewId) return;
+    previewId = id;
+    updateRail();
+    if (railBody) railBody.scrollTop = 0;
+  }
+
+  // ---------- rail width, collapse and resize ----------
+  var RAIL_MIN = 300, RAIL_MAX = 720, RAIL_SNAP = 210;
+  var railW = 400;
+
+  function applyRailWidth(px) {
+    document.documentElement.style.setProperty("--rail-w", px + "px");
+  }
+
+  function setRailCollapsed(collapsed) {
+    railCollapsed = collapsed;
+    rail.classList.toggle("collapsed", collapsed);
+    document.getElementById("app").classList.toggle("rail-closed", collapsed);
+    applyRailWidth(collapsed ? 0 : railW);
+    railGrip.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    railGrip.setAttribute("title", collapsed
+      ? "Drag to resize · click to show"
+      : "Drag to resize · click to hide");
+    railToggleText.textContent = (collapsed ? "Show" : "Hide") + " panel";
+    // The stage really does get wider, so the layer is re-fitted to the space
+    // it now has — after the width transition, or immediately without motion.
+    var refit = function () { if (isDesktop()) settle(true); };
+    if (reduceMotion) { refit(); return; }
+    var done = false;
+    var finish = function (ev) {
+      if (ev && ev.target !== rail) return;
+      if (done) return;
+      done = true;
+      rail.removeEventListener("transitionend", finish);
+      refit();
+    };
+    rail.addEventListener("transitionend", finish);
+    setTimeout(finish, 320);
+  }
+
+  // The bar does both jobs: drag it to resize, click it to hide or show.
+  // Dragging narrower than RAIL_SNAP collapses, so "drag it shut" works too.
+  (function () {
+    var dragging = false, startX = 0, startW = 0, moved = 0;
+
+    railGrip.addEventListener("pointerdown", function (ev) {
+      if (!isDesktop()) return;
+      railGrip.setPointerCapture(ev.pointerId);
+      dragging = true; moved = 0;
+      startX = ev.clientX;
+      startW = railCollapsed ? 0 : railW;
+      document.getElementById("app").classList.add("rail-dragging");
+      ev.preventDefault();
+    });
+
+    railGrip.addEventListener("pointermove", function (ev) {
+      if (!dragging) return;
+      var dx = startX - ev.clientX;              // drag left widens the rail
+      moved = Math.max(moved, Math.abs(dx));
+      var want = startW + dx;
+      var before = rail.getBoundingClientRect().width;
+      if (want < RAIL_SNAP) {
+        rail.classList.add("collapsed");
+        document.getElementById("app").classList.add("rail-closed");
+        applyRailWidth(0);
+      } else {
+        rail.classList.remove("collapsed");
+        document.getElementById("app").classList.remove("rail-closed");
+        railW = Math.max(RAIL_MIN, Math.min(RAIL_MAX, want));
+        applyRailWidth(railW);
+      }
+      // Keep what the reader is looking at put: the stage changed width, so
+      // shift the camera by half the delta instead of re-fitting and throwing
+      // away whatever they had panned or zoomed to.
+      var after = rail.getBoundingClientRect().width;
+      view.tx += (after - before) / 2;
+      applyTransform();
+    });
+
+    function endDrag(ev) {
+      if (!dragging) return;
+      dragging = false;
+      document.getElementById("app").classList.remove("rail-dragging");
+      if (moved < 4) {                            // a click, not a drag
+        setRailCollapsed(!railCollapsed);
+        return;
+      }
+      var nowClosed = rail.classList.contains("collapsed");
+      // Dragging shut sweeps through the minimum on the way past, which would
+      // otherwise leave that as the "last width". Reopening should return the
+      // panel to the size it was before the drag began.
+      if (nowClosed && startW >= RAIL_MIN) railW = startW;
+      setRailCollapsed(nowClosed);
+    }
+    railGrip.addEventListener("pointerup", endDrag);
+    railGrip.addEventListener("pointercancel", endDrag);
+
+    railGrip.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter" || ev.key === " ") {
+        ev.preventDefault();
+        setRailCollapsed(!railCollapsed);
+      } else if (ev.key === "ArrowLeft" || ev.key === "ArrowRight") {
+        ev.preventDefault();
+        var step = ev.key === "ArrowLeft" ? 24 : -24;
+        railW = Math.max(RAIL_MIN, Math.min(RAIL_MAX, railW + step));
+        if (railCollapsed) { railCollapsed = false; rail.classList.remove("collapsed"); }
+        applyRailWidth(railW);
+      }
+    });
+  })();
+
+  // ---------- emphasis ----------
+  function applyEmphasis(id) {
+    var edges = content.querySelectorAll(".edge");
+    var nodes = content.querySelectorAll(".node-card");
+    var i;
+    if (!id) {
+      for (i = 0; i < edges.length; i++) edges[i].classList.remove("dim", "hot");
+      for (i = 0; i < nodes.length; i++) nodes[i].classList.remove("dim", "selected");
+      return;
+    }
+    var related = {};
+    related[id] = true;
+    for (i = 0; i < edges.length; i++) {
+      var e = edges[i];
+      var f = e.getAttribute("data-from"), t = e.getAttribute("data-to");
+      var touches = (f === id || t === id);
+      e.classList.toggle("hot", touches);
+      e.classList.toggle("dim", !touches);
+      if (touches) { related[f] = true; related[t] = true; }
+    }
+    for (i = 0; i < nodes.length; i++) {
+      var nid = nodes[i].getAttribute("data-node-id");
+      nodes[i].classList.toggle("dim", !related[nid]);
+      nodes[i].classList.toggle("selected", nid === selectedId);
+    }
+  }
+
+  function refreshEmphasis() { applyEmphasis(selectedId || hoverId); }
+
+  // Building a level into a detached <g> (rather than straight into #content)
+  // is what makes continuous zoom possible: during a transition two levels are
+  // on screen at once, the child nested inside the parent's own box.
+  function buildLevelGroup(level) {
+    var g = el("g");
+    if (level.boundary) g.appendChild(buildBoundary(level.boundary));
+    var edgeLineLayer = el("g");
+    var edgeLabelLayer = el("g");
+    var placedTags = [];
+    buildRoutes(level).forEach(function (r) {
+      if (!r) return;
+      edgeLineLayer.appendChild(buildEdgeLine(r));
+      var lab = buildEdgeLabel(r, level, placedTags);
+      if (lab) edgeLabelLayer.appendChild(lab);
+    });
+    g.appendChild(edgeLineLayer);
+    g.appendChild(edgeLabelLayer);
+    var nodeLayer = el("g");
+    level.nodes.forEach(function (n) { nodeLayer.appendChild(buildNodeGroup(n)); });
+    g.appendChild(nodeLayer);
+    return g;
+  }
+
+  // The boundary label mask can only be sized once the text is in the document.
+  function fitBoundaryLabel(scope) {
+    var bl = scope.querySelector(".boundary-label");
+    var bgm = scope.querySelector(".boundary-label-bg");
+    if (!bl || !bgm) return;
+    var bb = bl.getBBox();
+    bgm.setAttribute("x", bb.x - 7);
+    bgm.setAttribute("width", bb.width + 14);
+    bgm.setAttribute("y", bb.y - 2);
+    bgm.setAttribute("height", bb.height + 4);
+  }
+
+  function setCanvasFor(level) {
+    svg.setAttribute("width", level.W);
+    svg.setAttribute("height", level.H);
+    svg.setAttribute("viewBox", "0 0 " + level.W + " " + level.H);
+  }
+
+  function renderLevel(key) {
+    var level = LEVELS[key];
+    selectedId = null;
+    hoverId = null;
+    previewId = null;
+    railShownId = null;
+    while (content.firstChild) content.removeChild(content.firstChild);
+    setCanvasFor(level);
+    content.appendChild(buildLevelGroup(level));
+    fitBoundaryLabel(content);
+    // `contains` is an assertion, not a drawing instruction: it names the cards
+    // that belong inside the frame, so the audit can catch a card that has
+    // drifted in or out of it — which silently changes what the diagram claims.
+    content.setAttribute("data-boundary", level.boundary
+      ? JSON.stringify({
+          x: level.boundary.x, y: level.boundary.y,
+          w: level.boundary.w, h: level.boundary.h,
+          contains: level.boundary.contains || null
+        })
+      : "");
+
+    renderCrumbs();
+    updateRail();
+  }
+
+  function renderCrumbs() {
+    while (crumbsEl.firstChild) crumbsEl.removeChild(crumbsEl.firstChild);
+    history.forEach(function (h, i) {
+      if (i > 0) {
+        var sep = document.createElement("span");
+        sep.className = "crumb-sep";
+        sep.textContent = "›";
+        crumbsEl.appendChild(sep);
+      }
+      var btn = document.createElement("button");
+      btn.className = "crumb";
+      btn.type = "button";
+      btn.textContent = LEVELS[h.key].crumb;
+      var idx = i;
+      btn.addEventListener("click", function () { goToHistoryIndex(idx); });
+      crumbsEl.appendChild(btn);
+    });
+  }
+
+  function applyView(v, animated) {
+    view.scale = v.scale; view.tx = v.tx; view.ty = v.ty;
+    if (animated && !reduceMotion) {
+      svg.classList.add("animate");
+      applyTransform();
+      setTimeout(function () { svg.classList.remove("animate"); }, 480);
+    } else {
+      svg.classList.remove("animate");
+      applyTransform();
+    }
+  }
+
+  // Lands at the legible reading scale — used whenever a level opens.
+  function settle(animated) {
+    var level = currentLevel();
+    var v = computeInitial(level);
+    view.baseScale = v.scale;
+    applyView(v, animated);
+  }
+
+  // Explicit "see it all" overview — bound to the FIT button only.
+  function fit(animated) {
+    applyView(computeOverview(currentLevel()), animated);
+  }
+
+  function goto(key, opts) {
+    opts = opts || {};
+    renderLevel(key);
+    settle(opts.animated);
+  }
+
+  // ---------- continuous ("infinite") zoom between levels ----------
+  //
+  // The old transition scaled the parent up, swapped the DOM, then faded the
+  // child in from a different scale — two discontinuous jumps, which is what
+  // made it feel abrupt. Instead, put the child level *inside* the parent
+  // node's own rectangle and simply keep zooming the camera. The child grows
+  // out of the box you tapped and fills the screen; nothing ever cuts.
+  //
+  // Transforms here are uniform scale + translate, {s, tx, ty}, applied as
+  // p * s + t. Composing camera V with placement T gives scale V.s*T.s and
+  // translate T.t*V.s + V.t, which is all the algebra below needs.
+  var ZOOM_MS = 760;
+  var transitioning = false;
+
+  function placementInto(level, rect, inset) {
+    var b = contentBounds(level);
+    var s = Math.min(rect.w * inset / b.w, rect.h * inset / b.h);
+    return {
+      s: s,
+      tx: (rect.x + rect.w / 2) - b.cx * s,
+      ty: (rect.y + rect.h / 2) - b.cy * s
+    };
+  }
+
+  // Camera V such that (V composed with T) equals the target view W — i.e.
+  // the nested child ends up exactly where it would sit if drawn on its own.
+  function cameraThrough(W, T) {
+    var s = W.scale / T.s;
+    return { scale: s, tx: W.tx - T.tx * s, ty: W.ty - T.ty * s };
+  }
+
+  // One zoom, anchored on a point. Interpolating the translation directly is
+  // what made the old motion sickening: with scale moving geometrically and
+  // translation moving linearly, the point you are zooming at wanders off and
+  // drifts back. Instead, interpolate where the anchor sits ON SCREEN and
+  // derive the translation from it, so the anchor travels a straight line to
+  // its destination while the scale grows under it — one motion, no swim.
+  function animateZoom(anchor, from, to, ms, onFrame, done) {
+    var p0x = anchor.x * from.scale + from.tx, p0y = anchor.y * from.scale + from.ty;
+    var p1x = anchor.x * to.scale + to.tx,     p1y = anchor.y * to.scale + to.ty;
+    var k0 = Math.log(from.scale), k1 = Math.log(to.scale);
+
+    function set(e) {
+      view.scale = Math.exp(k0 + (k1 - k0) * e);
+      view.tx = (p0x + (p1x - p0x) * e) - anchor.x * view.scale;
+      view.ty = (p0y + (p1y - p0y) * e) - anchor.y * view.scale;
+      applyTransform();
+      if (onFrame) onFrame(e);
+    }
+
+    if (reduceMotion) { set(1); if (done) done(); return; }
+
+    var t0 = null;
+    function frame(now) {
+      if (t0 === null) t0 = now;
+      var u = Math.min(1, (now - t0) / ms);
+      set(u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
+      if (u < 1) requestAnimationFrame(frame);
+      else if (done) done();
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // Opacity is driven inside the same frame loop as the transform. Handing it
+  // to a CSS transition instead let the two run on different clocks, which is
+  // what produced the flicker as the layers crossed.
+  function ramp(e, from, to) {
+    if (e <= from) return 0;
+    if (e >= to) return 1;
+    return (e - from) / (to - from);
+  }
+
+  function drillInto(nodeId) {
+    if (transitioning) return;
+    var level = currentLevel();
+    var node = nodeById(level, nodeId);
+    if (!node || !node.drillTo) return;
+    deselect();
+
+    var childKey = node.drillTo;
+    var childLevel = LEVELS[childKey];
+    history.push({ key: childKey, parentNodeId: node.id });
+    renderCrumbs();
+
+    if (reduceMotion) { goto(childKey, { animated: false }); return; }
+
+    transitioning = true;
+    svg.classList.remove("animate", "animate-back");
+
+    // Nest the child inside the tapped card, then just keep zooming.
+    var T = placementInto(childLevel, node, 0.82);
+    var childG = buildLevelGroup(childLevel);
+    childG.setAttribute("transform",
+      "translate(" + T.tx + "," + T.ty + ") scale(" + T.s + ")");
+    childG.style.opacity = "0";
+    content.appendChild(childG);
+    fitBoundaryLabel(childG);
+    var parentG = content.firstChild;
+
+    var W = computeInitial(childLevel);
+    var V1 = cameraThrough(W, T);
+    // Anchor on the card's own centre — the thing the reader pointed at.
+    var anchor = { x: node.x + node.w / 2, y: node.y + node.h / 2 };
+
+    animateZoom(anchor, { scale: view.scale, tx: view.tx, ty: view.ty }, V1, ZOOM_MS,
+      function (e) {
+        childG.style.opacity = ramp(e, 0, 0.30);
+        parentG.style.opacity = 1 - ramp(e, 0.18, 0.58);
+      },
+      function () {
+        renderLevel(childKey);
+        view.baseScale = W.scale;
+        view.scale = W.scale; view.tx = W.tx; view.ty = W.ty;
+        applyTransform();
+        transitioning = false;
+      });
+  }
+
+  function goToHistoryIndex(idx) {
+    if (transitioning) return;
+    if (idx === history.length - 1) return;
+    deselect();
+
+    var fromEntry = history[history.length - 1];
+    var parentKey = history[history.length - 2].key;
+    var parentLevel = LEVELS[parentKey];
+    var parentNode = nodeById(parentLevel, fromEntry.parentNodeId);
+    history.pop();
+    renderCrumbs();
+
+    if (reduceMotion || !parentNode) {
+      history = history.slice(0, idx + 1);
+      goto(currentKey(), { animated: false });
+      return;
+    }
+
+    transitioning = true;
+    var childLevel = LEVELS[fromEntry.key];
+    var T = placementInto(childLevel, parentNode, 0.82);
+
+    // Rebuild the parent with the child nested where it came from, and set the
+    // camera so this first frame is pixel-identical to the one before it.
+    var childNow = { scale: view.scale, tx: view.tx, ty: view.ty };
+    while (content.firstChild) content.removeChild(content.firstChild);
+    setCanvasFor(parentLevel);
+    var parentG = buildLevelGroup(parentLevel);
+    content.appendChild(parentG);
+    fitBoundaryLabel(parentG);
+    var childG = buildLevelGroup(childLevel);
+    childG.setAttribute("transform",
+      "translate(" + T.tx + "," + T.ty + ") scale(" + T.s + ")");
+    content.appendChild(childG);
+    fitBoundaryLabel(childG);
+
+    var V0 = {
+      scale: childNow.scale / T.s,
+      tx: childNow.tx - T.tx * (childNow.scale / T.s),
+      ty: childNow.ty - T.ty * (childNow.scale / T.s)
+    };
+    view.scale = V0.scale; view.tx = V0.tx; view.ty = V0.ty;
+    applyTransform();
+    parentG.style.opacity = "0";
+    childG.style.opacity = "1";
+
+    var W = computeInitial(parentLevel);
+    var anchor = { x: parentNode.x + parentNode.w / 2, y: parentNode.y + parentNode.h / 2 };
+
+    animateZoom(anchor, V0, W, ZOOM_MS,
+      function (e) {
+        parentG.style.opacity = ramp(e, 0, 0.30);
+        childG.style.opacity = 1 - ramp(e, 0.18, 0.58);
+      },
+      function () {
+        renderLevel(parentKey);
+        view.baseScale = W.scale;
+        view.scale = W.scale; view.tx = W.tx; view.ty = W.ty;
+        applyTransform();
+        // Clear the guard BEFORE chaining, or the next hop is rejected by the
+        // very check that protects a hop in progress — which is what broke
+        // jumping back more than one level at a time.
+        transitioning = false;
+        if (history.length - 1 > idx) goToHistoryIndex(idx);
+      });
+  }
+
+  // ---------- gestures ----------
+  // Single-touch is the primary input model: one-finger drag pans, one tap
+  // opens/drills, and one-finger double-tap(-drag) zooms — the same "tap,
+  // then hold and slide" gesture maps apps use, so nothing here ever
+  // requires a second finger. Two-finger pinch still works as a bonus.
+  var DOUBLE_TAP_MS = 320;
+  var DOUBLE_TAP_DIST = 40;
+  var ZOOM_DRAG_SENSITIVITY = 150; // px of vertical drag per octave of zoom
+  var DOUBLE_TAP_ZOOM_FACTOR = 1.6;
+
+  var pointers = {};
+  var gesture = {
+    mode: null, startDist: 0, startScale: 1, lastMid: null,
+    startTx: 0, startTy: 0, startY: 0, anchor: null,
+    moved: 0, downTarget: null, downTime: 0
+  };
+  var lastTapUp = null; // {time, x, y} of the last clean single-finger tap release
+
+  // A touch tap fires a synthetic click a moment after pointerup, and that
+  // click is hit-tested fresh against whatever is on screen *then*. So a panel
+  // opened by the tap appears under the finger and immediately receives the
+  // click itself — dismissing itself before the user sees it. (Mouse input is
+  // immune: its click target comes from the pointerdown/up elements, not a new
+  // hit test.) Swallow exactly that one stray click.
+  var lastPointerType = "mouse";
+  var ghostGuardUntil = 0;
+  function armGhostClickGuard() {
+    if (lastPointerType === "touch") ghostGuardUntil = Date.now() + 700;
+  }
+  document.addEventListener("click", function (ev) {
+    if (Date.now() > ghostGuardUntil) return;
+    if (ev.target.closest && ev.target.closest(".sheet, .sheet-backdrop")) {
+      ghostGuardUntil = 0;
+      ev.stopPropagation();
+      ev.preventDefault();
+    }
+  }, true);
+
+  function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
+  function midpoint(a, b) { return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; }
+  function pointerList() { return Object.keys(pointers).map(function (k) { return pointers[k]; }); }
+
+  function zoomAt(screenX, screenY, newScale) {
+    var rect = stageWrap.getBoundingClientRect();
+    var localX = screenX - rect.left, localY = screenY - rect.top;
+    var worldX = (localX - view.tx) / view.scale;
+    var worldY = (localY - view.ty) / view.scale;
+    view.scale = newScale;
+    view.tx = localX - worldX * view.scale;
+    view.ty = localY - worldY * view.scale;
+    applyTransform();
+  }
+
+  // Zooms toward newScale while keeping the world point under (anchor)
+  // fixed, computed from a frozen start transform so a whole drag gesture
+  // stays anchored to the original tap point instead of drifting frame to frame.
+  function zoomAtAnchored(anchor, startScale, startTx, startTy, newScale) {
+    var rect = stageWrap.getBoundingClientRect();
+    var localX = anchor.x - rect.left, localY = anchor.y - rect.top;
+    var worldX = (localX - startTx) / startScale;
+    var worldY = (localY - startTy) / startScale;
+    view.scale = newScale;
+    view.tx = localX - worldX * newScale;
+    view.ty = localY - worldY * newScale;
+    applyTransform();
+  }
+
+  stageWrap.addEventListener("pointerdown", function (ev) {
+    stageWrap.setPointerCapture(ev.pointerId);
+    lastPointerType = ev.pointerType || "mouse";
+    pointers[ev.pointerId] = { x: ev.clientX, y: ev.clientY };
+    var pts = pointerList();
+    gesture.moved = 0;
+    gesture.downTime = Date.now();
+    gesture.downTarget = ev.target;
+    hint.classList.add("hidden");
+    stageWrap.classList.add("grabbing");
+
+    if (pts.length === 1) {
+      var now = Date.now();
+      if (lastTapUp && now - lastTapUp.time < DOUBLE_TAP_MS &&
+          dist(lastTapUp, { x: ev.clientX, y: ev.clientY }) < DOUBLE_TAP_DIST) {
+        // second touch of a double-tap: enter one-finger zoom-drag
+        gesture.mode = "zoomdrag";
+        gesture.anchor = { x: lastTapUp.x, y: lastTapUp.y };
+        gesture.startScale = view.scale;
+        gesture.startTx = view.tx;
+        gesture.startTy = view.ty;
+        gesture.startY = ev.clientY;
+        lastTapUp = null;
+      } else {
+        gesture.mode = "pan";
+      }
+    } else if (pts.length === 2) {
+      gesture.mode = "pinch";
+      gesture.startDist = dist(pts[0], pts[1]);
+      gesture.startScale = view.scale;
+      gesture.lastMid = midpoint(pts[0], pts[1]);
+    }
+  });
+
+  stageWrap.addEventListener("pointermove", function (ev) {
+    if (!pointers[ev.pointerId]) return;
+    var prev = pointers[ev.pointerId];
+    var dx0 = ev.clientX - prev.x, dy0 = ev.clientY - prev.y;
+    gesture.moved += Math.abs(dx0) + Math.abs(dy0);
+    pointers[ev.pointerId] = { x: ev.clientX, y: ev.clientY };
+    var pts = pointerList();
+
+    if (gesture.mode === "pan" && pts.length === 1) {
+      view.tx += dx0; view.ty += dy0;
+      applyTransform();
+    } else if (gesture.mode === "zoomdrag" && pts.length === 1) {
+      // Maps convention: drag DOWN to zoom in (pull the map toward you),
+      // drag UP to zoom out.
+      var deltaY = ev.clientY - gesture.startY;
+      var factor = Math.pow(2, deltaY / ZOOM_DRAG_SENSITIVITY);
+      var dragScale = clampScale(currentLevel(), gesture.startScale * factor);
+      zoomAtAnchored(gesture.anchor, gesture.startScale, gesture.startTx, gesture.startTy, dragScale);
+    } else if (gesture.mode === "pinch" && pts.length === 2) {
+      var d = dist(pts[0], pts[1]);
+      var mid = midpoint(pts[0], pts[1]);
+      var newScale = clampScale(currentLevel(), gesture.startScale * (d / gesture.startDist));
+      zoomAt(mid.x, mid.y, newScale);
+    }
+  });
+
+  function endPointer(ev) {
+    delete pointers[ev.pointerId];
+    var pts = pointerList();
+    if (pts.length === 0) {
+      if (gesture.mode === "pan" && gesture.moved < 8 && Date.now() - gesture.downTime < 450) {
+        lastTapUp = { time: Date.now(), x: ev.clientX, y: ev.clientY };
+        handleTap(gesture.downTarget, ev.clientX, ev.clientY);
+      } else if (gesture.mode === "zoomdrag" && gesture.moved < 8) {
+        // released without dragging: treat as a plain double-tap zoom-in step
+        var steppedScale = clampScale(currentLevel(), gesture.startScale * DOUBLE_TAP_ZOOM_FACTOR);
+        svg.classList.add("animate");
+        zoomAtAnchored(gesture.anchor, gesture.startScale, gesture.startTx, gesture.startTy, steppedScale);
+        setTimeout(function () { svg.classList.remove("animate"); }, 480);
+      }
+      gesture.mode = null;
+      stageWrap.classList.remove("grabbing");
+    } else if (pts.length === 1) {
+      gesture.mode = "pan";
+    }
+  }
+
+  stageWrap.addEventListener("pointerup", endPointer);
+  stageWrap.addEventListener("pointercancel", endPointer);
+
+  function handleTap(target, clientX, clientY) {
+    var infoEl = target.closest && target.closest("[data-info-id]");
+    if (infoEl) {
+      openSheetFor(infoEl.getAttribute("data-info-id"));
+      return;
+    }
+    var nodeEl = target.closest && target.closest("[data-node-id]");
+    if (nodeEl) {
+      var id = nodeEl.getAttribute("data-node-id");
+      var node = nodeById(currentLevel(), id);
+      if (node && node.drillTo) drillInto(id);
+      else openSheetFor(id);
+      return;
+    }
+    // clicked bare canvas — drop the selection
+    if (selectedId || sheetIsOpen()) deselect();
+  }
+
+  // Hover emphasis, fine pointers only: light up the hovered box's own
+  // connections. Skipped mid-gesture so panning doesn't flicker. The same
+  // hover also previews the box in the rail — emphasis and preview read the
+  // one hoverId, so they can never disagree about what is being pointed at.
+  stageWrap.addEventListener("mousemove", function (ev) {
+    if (!mqFinePointer.matches || gesture.mode) return;
+    var g = ev.target.closest && ev.target.closest("[data-node-id]");
+    var id = g ? g.getAttribute("data-node-id") : null;
+    if (id !== hoverId) {
+      hoverId = id;
+      refreshEmphasis();
+      setPreview(id);
+    }
+  });
+  stageWrap.addEventListener("mouseleave", function () {
+    if (hoverId) { hoverId = null; refreshEmphasis(); setPreview(null); }
+  });
+
+  stageWrap.addEventListener("wheel", function (ev) {
+    ev.preventDefault();
+    hint.classList.add("hidden");
+
+    // Shift+scroll pans sideways, the desktop convention for a wide canvas.
+    if (ev.shiftKey && !ev.ctrlKey && !ev.metaKey) {
+      view.tx -= (ev.deltaY || ev.deltaX);
+      applyTransform();
+      return;
+    }
+    // Everything else zooms at the pointer — plain wheel, and the ctrl/meta
+    // deltas a trackpad pinch sends.
+    var rect = stageWrap.getBoundingClientRect();
+    var localX = ev.clientX - rect.left, localY = ev.clientY - rect.top;
+    var factor = Math.exp(-ev.deltaY * 0.0015);
+    var newScale = clampScale(currentLevel(), view.scale * factor);
+    var worldX = (localX - view.tx) / view.scale;
+    var worldY = (localY - view.ty) / view.scale;
+    view.scale = newScale;
+    view.tx = localX - worldX * view.scale;
+    view.ty = localY - worldY * view.scale;
+    applyTransform();
+  }, { passive: false });
+
+  // keyboard activation: the info dot is its own tab stop, so details are
+  // reachable without a mouse even on cards whose Enter drills instead.
+  content.addEventListener("keydown", function (ev) {
+    if (ev.key !== "Enter" && ev.key !== " ") return;
+    var info = ev.target.closest && ev.target.closest("[data-info-id]");
+    if (info) {
+      ev.preventDefault();
+      openSheetFor(info.getAttribute("data-info-id"));
+      return;
+    }
+    var g = ev.target.closest && ev.target.closest("[data-node-id]");
+    if (!g) return;
+    ev.preventDefault();
+    var id = g.getAttribute("data-node-id");
+    var node = nodeById(currentLevel(), id);
+    if (node && node.drillTo) drillInto(id); else openSheetFor(id);
+  });
+
+  // ---------- zoom buttons + keyboard ----------
+  function zoomByFactor(f, animated) {
+    var vw = stageWrap.clientWidth, vh = stageWrap.clientHeight;
+    var newScale = clampScale(currentLevel(), view.scale * f);
+    var worldX = (vw / 2 - view.tx) / view.scale, worldY = (vh / 2 - view.ty) / view.scale;
+    view.scale = newScale;
+    view.tx = vw / 2 - worldX * view.scale;
+    view.ty = vh / 2 - worldY * view.scale;
+    if (animated && !reduceMotion) {
+      svg.classList.add("animate");
+      applyTransform();
+      setTimeout(function () { svg.classList.remove("animate"); }, 480);
+    } else {
+      applyTransform();
+    }
+  }
+
+  function goUp() {
+    if (history.length > 1) goToHistoryIndex(history.length - 2);
+  }
+
+  document.getElementById("btnFit").addEventListener("click", function () { resetOrFit(true); });
+
+  document.addEventListener("keydown", function (ev) {
+    if (ev.ctrlKey || ev.metaKey) return; // leave browser shortcuts alone
+    // Let the panels handle their own typing/scrolling; Escape still bubbles.
+    var inPanel = ev.target && ev.target.closest &&
+      ev.target.closest(".rail, .sheet, .crumbs, .controls");
+    if (inPanel && ev.key !== "Escape") return;
+
+    var step = ev.shiftKey ? 260 : 90;
+    switch (ev.key) {
+      case "ArrowLeft":  view.tx += step; applyTransform(); break;
+      case "ArrowRight": view.tx -= step; applyTransform(); break;
+      case "ArrowUp":    view.ty += step; applyTransform(); break;
+      case "ArrowDown":  view.ty -= step; applyTransform(); break;
+      case "+": case "=": zoomByFactor(1.25, true); break;
+      case "-": case "_": zoomByFactor(1 / 1.25, true); break;
+      case "0": settle(true); break;
+      case "f": case "F": resetOrFit(true); break;
+      case "p": case "P":
+        if (!isDesktop()) return; // the rail only exists on desktop
+        setRailCollapsed(!railCollapsed);
+        break;
+      case "?": showLegend(); break;
+      case "Backspace": goUp(); break;
+      case "Escape":
+        if (selectedId || sheetIsOpen()) deselect();
+        else goUp();
+        break;
+      default: return; // unhandled key: don't preventDefault
+    }
+    ev.preventDefault();
+  });
+
+  // ---------- detail sheet ----------
+  var backdrop = document.getElementById("backdrop");
+  var detailSheet = document.getElementById("detailSheet");
+  var legendSheet = document.getElementById("legendSheet");
+
+  // Fill the detail panel from a node. Pure rendering — it neither selects the
+  // node nor opens anything, so both a click and a hover can drive it.
+  function renderDetailFor(nodeId) {
+    var level = currentLevel();
+    var node = nodeById(level, nodeId);
+    if (!node) return false;
+
+    document.getElementById("dStereo").textContent = STEREO_LABEL[node.kind];
+    document.getElementById("dTitle").textContent = node.name;
+    var techEl = document.getElementById("dTech");
+    if (node.tech) { techEl.textContent = node.tech; techEl.style.display = ""; }
+    else techEl.style.display = "none";
+    document.getElementById("dDesc").textContent = node.desc;
+
+    var filesWrap = document.getElementById("dFilesWrap");
+    var filesList = document.getElementById("dFiles");
+    while (filesList.firstChild) filesList.removeChild(filesList.firstChild);
+    if (node.files && node.files.length) {
+      filesWrap.style.display = "";
+      node.files.forEach(function (f) {
+        var li = document.createElement("li");
+        // Split at the last separator so the filename — the token the reader
+        // is actually looking for — is the high-contrast part of the line.
+        var cut = f.lastIndexOf("/");
+        if (cut > -1 && cut < f.length - 1) {
+          var dir = document.createElement("span");
+          dir.className = "f-dir";
+          dir.textContent = f.slice(0, cut + 1);
+          var base = document.createElement("span");
+          base.className = "f-base";
+          base.textContent = f.slice(cut + 1);
+          li.appendChild(dir);
+          li.appendChild(base);
+        } else {
+          var only = document.createElement("span");
+          only.className = "f-base";
+          only.textContent = f;
+          li.appendChild(only);
+        }
+        filesList.appendChild(li);
+      });
+    } else {
+      filesWrap.style.display = "none";
+    }
+
+    var relsWrap = document.getElementById("dRelsWrap");
+    var relsList = document.getElementById("dRels");
+    while (relsList.firstChild) relsList.removeChild(relsList.firstChild);
+    var rels = [];
+    level.edges.forEach(function (e) {
+      if (e.from === nodeId) {
+        var t = nodeById(level, e.to);
+        rels.push({ dir: "out", verb: e.label || "relates to", other: t, id: e.to });
+      } else if (e.to === nodeId) {
+        var s = nodeById(level, e.from);
+        rels.push({ dir: "in", verb: e.label || "relates to", other: s, id: e.from });
+      }
+    });
+    // Outgoing first: "what this calls" then "what calls this" is the order
+    // people read a box in, and it makes the arrow column sort itself.
+    rels.sort(function (a, b) { return (a.dir === b.dir) ? 0 : (a.dir === "out" ? -1 : 1); });
+    if (rels.length) {
+      relsWrap.style.display = "";
+      rels.forEach(function (r) {
+        var row = document.createElement("div");
+        row.className = "rel";
+        row.setAttribute("data-kind", r.other ? r.other.kind : "external");
+
+        var dir = document.createElement("span");
+        dir.className = "rel-dir";
+        dir.setAttribute("aria-hidden", "true");
+        dir.textContent = r.dir === "out" ? "→" : "←";
+        row.appendChild(dir);
+
+        var main = document.createElement("span");
+        var name = document.createElement("span");
+        name.className = "rel-name";
+        name.textContent = r.other ? r.other.name : r.id;
+        var verb = document.createElement("span");
+        verb.className = "rel-verb";
+        var flow = document.createElement("span");
+        flow.className = "rel-flow";
+        // Real text, not generated content: the arrow glyph is decorative, so
+        // this word is the only direction cue a screen reader gets.
+        flow.textContent = r.dir === "out" ? "OUT" : "IN";
+        verb.appendChild(flow);
+        verb.appendChild(document.createTextNode(r.verb));
+        main.appendChild(name);
+        main.appendChild(verb);
+        row.appendChild(main);
+
+        relsList.appendChild(row);
+      });
+    } else {
+      relsWrap.style.display = "none";
+    }
+
+    var openBtn = document.getElementById("dOpenBtn");
+    if (node.drillTo) {
+      openBtn.style.display = "";
+      openBtn.textContent = "Open " + node.name + " ›";
+      openBtn.onclick = function () { closeSheet(); drillInto(nodeId); };
+    } else {
+      openBtn.style.display = "none";
+    }
+    return true;
+  }
+
+  // Commit a selection: pin these details, and on mobile raise the sheet.
+  function openSheetFor(nodeId) {
+    if (!renderDetailFor(nodeId)) return;
+    railShownId = nodeId;
+    previewId = null;
+    selectedId = nodeId;
+    refreshEmphasis();
+
+    if (isDesktop()) {
+      // A pinned card in a collapsed rail would be invisible; opening the
+      // panel is the whole point of the click.
+      if (railCollapsed) setRailCollapsed(false);
+      updateRail();
+      railBody.scrollTop = 0;
+    } else {
+      backdrop.classList.add("open");
+      detailSheet.classList.add("open");
+      legendSheet.classList.remove("open");
+      armGhostClickGuard();
+    }
+  }
+
+  function closeSheet() {
+    backdrop.classList.remove("open");
+    detailSheet.classList.remove("open");
+    legendSheet.classList.remove("open");
+  }
+
+  // Drop the current selection and return the rail to its legend resting
+  // state (desktop) or dismiss the sheet (mobile).
+  function deselect() {
+    selectedId = null;
+    previewId = null;
+    railShownId = null;
+    refreshEmphasis();
+    updateRail();
+    closeSheet();
+  }
+
+  function sheetIsOpen() {
+    return detailSheet.classList.contains("open") || legendSheet.classList.contains("open");
+  }
+
+  function showLegend() {
+    if (isDesktop()) {
+      if (railCollapsed) setRailCollapsed(false);
+      deselect();
+      railBody.scrollTop = 0;
+    } else {
+      detailSheet.classList.remove("open");
+      legendSheet.classList.add("open");
+      backdrop.classList.add("open");
+      armGhostClickGuard();
+    }
+  }
+
+  document.getElementById("closeDetail").addEventListener("click", deselect);
+  document.getElementById("closeLegend").addEventListener("click", closeSheet);
+  document.getElementById("dDismiss").addEventListener("click", showLegend);
+  backdrop.addEventListener("click", deselect);
+  document.getElementById("btnLegend").addEventListener("click", showLegend);
+
+  // Legend swatches are built from the very same icon code the cards use, so
+  // the key can never drift out of sync with the drawing.
+  (function buildLegend() {
+    var host = document.getElementById("legendKinds");
+    if (!host) return;
+    [
+      ["person", "Person", "a human actor using the system"],
+      ["system", "Software system", "the system in focus"],
+      ["external", "External system", "third party, outside your code"],
+      ["container", "Container", "an app, service, CLI or library you run"],
+      ["component", "Component", "a module inside a container"],
+      ["store", "Data store", "a database, or files on disk"]
+    ].forEach(function (row) {
+      var kind = row[0];
+      var wrap = document.createElement("div");
+      wrap.className = "legend-row";
+
+      var sw = el("svg", { class: "legend-swatch", width: 46, height: 34, viewBox: "0 0 46 34" });
+      var card = el("g", { class: "node-card", "data-kind": kind });
+      card.appendChild(el("rect", {
+        x: 1, y: 1, width: 44, height: 32, rx: kind === "person" ? 8 : 2, class: "card"
+      }));
+      card.appendChild(el("rect", { x: 2.4, y: 6, width: 3, height: 22, rx: 1.5, class: "kind-bar" }));
+      var ic = buildIcon(kind, 12, 7);
+      ic.setAttribute("transform", "translate(12,7) scale(1)");
+      card.appendChild(ic);
+      sw.appendChild(card);
+      wrap.appendChild(sw);
+
+      var txt = document.createElement("div");
+      txt.className = "legend-text";
+      txt.appendChild(document.createTextNode(row[1]));
+      var small = document.createElement("small");
+      small.textContent = row[2];
+      txt.appendChild(small);
+      wrap.appendChild(txt);
+      host.appendChild(wrap);
+    });
+  })();
+
+  // ---------- theme ----------
+  // The stylesheet already answers prefers-color-scheme; stamping data-theme
+  // on the root is what lets a reader override it, and it wins in both
+  // directions because the attribute rules are written after the media query.
+  var themeBtn = document.getElementById("themeBtn");
+  var themeBtnText = document.getElementById("themeBtnText");
+  var mqDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function activeTheme() {
+    return document.documentElement.getAttribute("data-theme")
+        || (mqDark.matches ? "dark" : "light");
+  }
+  function setTheme(t) {
+    document.documentElement.setAttribute("data-theme", t);
+    var next = t === "dark" ? "light" : "dark";
+    themeBtn.setAttribute("title", "Switch to " + next + " mode");
+    themeBtnText.textContent = "Switch to " + next + " mode";
+  }
+  themeBtn.addEventListener("click", function () {
+    setTheme(activeTheme() === "dark" ? "light" : "dark");
+  });
+  // Follow the OS until the reader says otherwise.
+  setTheme(activeTheme());
+  mqDark.addEventListener("change", function (ev) {
+    if (!themeBtn.dataset.userSet) setTheme(ev.matches ? "dark" : "light");
+  });
+  themeBtn.addEventListener("click", function () { themeBtn.dataset.userSet = "1"; });
+
+  // ---------- boot ----------
+  var lastDesktop = isDesktop();
+  window.addEventListener("resize", function () {
+    var nowDesktop = isDesktop();
+    if (nowDesktop !== lastDesktop) {
+      // Crossing the breakpoint swaps both the panel home and the view
+      // model (fit-whole-layer vs 1:1 reading scale), so re-derive both.
+      lastDesktop = nowDesktop;
+      rehome();
+      settle(false);
+    }
+    // Within a mode, an ordinary window resize leaves the reader's own
+    // pan/zoom alone — desktop canvases don't snap back on resize.
+  });
+
+  rehome();
+  goto(ROOT_LEVEL, { animated: false });
+  setTimeout(function () { hint.classList.add("hidden"); }, 4200);
+})();
+</script>
